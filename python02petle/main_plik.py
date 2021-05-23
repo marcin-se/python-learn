@@ -98,7 +98,7 @@ if not sent and waga_razem != 0:
         nr_paczki + 1))
     animacja(". ", 3)
     paczki.append(int(waga_paczki))
-
+
 if not nr_przesylki:
     print(
         " | i | Nie otrzymano przesyłek do wysłania. Rzadnej paczki nie nadano.")

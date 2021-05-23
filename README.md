@@ -7,4 +7,4 @@
 
 2. Pomyślnie sklonowano repozytorium zdalne do kompa.
 
-3. W repozytorium są dwa katalogi.
+3. W repozytorium są dwa katalogi i kilka plików.
