@@ -27,13 +27,13 @@ def dividing_line(stamp, repeat):
 
 
 clear_screen()
-file_in = open(path_in, "r")
-#file_out = open(path_out, "w+")
+file_in = open(path_in, "r", encoding="utf8")
+file_out = open(path_out, "w+", encoding="utf8")
 
 quantity_parcels = int(sys.argv[1])
 print("\n |???| LICZBA PRZESYŁEK DO WYSŁANIA: ", quantity_parcels)
-#file_out.write("lICZBA PRZESYŁEK: {}.\n".format(quantity_parcels))
-
+file_out.write("\t\t DEKLAROWANA lICZBA PRZESYŁEK: {}.\n".format(quantity_parcels))
+file_out.write("* * * * * * * * * * * * * * * * * * * * * * * * * * *\n")
 parcels: list[float] = []
 packs: list[float] = []
 total_weight: float = round(0, 3)
@@ -59,27 +59,26 @@ while quantity_parcels:
         total_weight += weight
         if pack_weight + weight == 20:
             pack_weight += weight
-            print(" |>| Przesyłkę nr {}. ({} kg) dodano do PACZKI NR [{}].".
+            print(" |>| Przesyłkę nr {}. ({:6.3f} kg) dodano do PACZKI NR [{}].".
                   format(parcel_num, weight, pack_num + 1))
-            #file_out.write("Przesyłka nr {}.\t{} kg\tPACZKA NR [{}]".
-            #   format(parcel_num, float(round(weight, 3)), pack_num + 1))
+            file_out.write("Przesyłka nr {}.\t{:6.3f} kg\tPACZKA NR [{}]\n".
+                  format(parcel_num, float(round(weight, 3)), pack_num + 1))
             if_full = False
         else:
-            print(
-                " |>| Przesyłkę nr {}. ({} kg), przekierowano do nowej PACZKI NR [{}].".
+            print(" |>| Przesyłkę nr {}. ({:6.3f} kg), przekierowano do nowej PACZKI NR [{}].".
                 format(parcel_num, weight, pack_num + 2))
-            #file_out.write("Przesyłka nr {}.\t{} kg\tPACZKA NR [{}]".
-            #   format(parcel_num, float(round(weight, 3)), pack_num + 2))
+            file_out.write(" Przesyłka nr {}.\t{:6.3f} kg\tPACZKA NR [{}]\n".
+               format(parcel_num, float(round(weight, 3)), pack_num + 2))
             if_full = True
     else:
         parcels.append(float(round(weight, 3)))
         pack_weight += weight
         total_weight += weight
         parcel_num += 1
-        print(" |>| Przesyłkę nr {}. ({} kg) dodano do PACZKI NR [{}].".format(
+        print(" |>| Przesyłkę nr {}. ({:6.3f} kg) dodano do PACZKI NR [{}].".format(
             parcel_num, weight, pack_num + 1))
-        #file_out.write("Przesyłka nr {}.\t{} kg\tPACZKA NR [{}]".
-        #   format(parcel_num, float(round(weight, 3)), pack_num + 1))
+        file_out.write(" Przesyłka nr {}.\t{:6.3f} kg\tPACZKA NR [{}]\n".
+           format(parcel_num, float(round(weight, 3)), pack_num + 1))
         if quantity_parcels == 1:
             to_ship = True
         else:
@@ -87,11 +86,11 @@ while quantity_parcels:
     quantity_parcels -= 1
     while to_ship and total_weight > 0:
         print(
-            " |>>>| PACZKA NR [{}], o łącznej wadze przesyłek {} kg, oczekuje... ".
+            " |>>>| PACZKA NR [{}], o łącznej wadze przesyłek {:6.3f} kg, oczekuje... ".
             format(pack_num + 1, pack_weight))
-        animation("* ", 2)
-        #file_out.write("PACZKA NR [{}]\t({} kg)\tstatus: wysłana".
-        #   format(pack_num + 1, float(round(weight, 3))))
+        animation("* ", 1)
+        file_out.write("\t >>> PACZKA NR [{}]\t({:6.3f} kg)\tstatus: wysłana\n".
+           format(pack_num + 1, float(round(pack_weight, 3))))
         packs.append(float(round(pack_weight, 3)))
         if if_full:
             pack_weight = weight
@@ -106,33 +105,32 @@ while quantity_parcels:
 
 if not weight and total_weight > 0:
     print(
-        " |>>>| PACZKA NR [{}], o łącznej wadze przesyłek: {} kg, oczekuje... ".
+        " |>>>| PACZKA NR [{}], o łącznej wadze przesyłek: {:6.3f} kg, oczekuje... ".
         format(pack_num + 1, pack_weight))
-    animation("* ", 2)
-    #file_out.write("PACZKA NR [{}]\t({} kg)\tstatus: wysłana".
-    #   format(pack_num + 1, float(round(weight, 3))))
+    animation("* ", 1)
+    file_out.write("\t >>> PACZKA NR [{}]\t({:6.3f} kg)\tstatus: wysłana\n".
+       format(pack_num + 1, float(round(pack_weight, 3))))
     packs.append(float(round(pack_weight, 3)))
     pack_num += 1
 
 if not parcel_num:
     print(" |i| Nie otrzymano przesyłek do wysłania. Żadnej PACZKI nie nadano.")
-    #file_out.write("lICZBA PRZESYŁEK: 0.\n")
+    file_out.write(" PODANO lICZBĘ PRZESYŁEK: 0.\n")
 else:
     dividing_line("*", 80)
-    #file_out.write("*******************\n")
+    file_out.write("* * * * * * * * * * * * * * * * * * * * * * * * * * *\n")
     print("\n |i| Wszystkie przyjęte przesyłki wysłano.")
-    print(
-        " |i| Łącznie wysłano PACZEK: {}, w których umieszczono przesyłek: {}.".
+    print(" |i| Łącznie wysłano PACZEK: {}, w których umieszczono przesyłek: {}.".
         format(len(packs), len(parcels)))
-    #file_out.write("Razem PACZEK: {}, w tym przesyłek: {}.\n".
-    #               format(len(packs), len(parcels)))
-    print(" |i| Łącznie wszystkie wysłane przesyłki ważyły:\t{} kg".
+    file_out.write("Razem PACZEK: {}, w tym przesyłek: {}.\n".
+                   format(len(packs), len(parcels)))
+    print(" |i| Łącznie wszystkie wysłane przesyłki ważyły:\t{:6.3f} kg".
           format(float(round(total_weight, 3))))
-    #file_out.write("Łączna waga wysłanych przesyłek: {} kg.\n".
-    #               format(total_weight))
-    y = float(round((20 * pack_num - total_weight), 3))
-    print(" |i| Pusta przestrzeń w PACZKACH wyniosła:\t\t{} kg".format(y))
-    #file_out.write("Pusta przestrzeń w paczkach: {} kg.\n".format(y))
+    file_out.write("Łączna waga wysłanych przesyłek: {:6.3f} kg.\n".
+                   format(round(total_weight, 3)))
+    y = round(float(20 * pack_num - total_weight), 3)
+    print(" |i| Pusta przestrzeń w PACZKACH wyniosła:\t\t{:6.3f} kg".format(y))
+    file_out.write("Pusta przestrzeń w paczkach: {:6.3f} kg.\n".format(y))
     min_pack_weight, id_pack = float(round(20, 3)), 0
     for i in range(pack_num):
         if packs[i] < min_pack_weight:
@@ -140,7 +138,8 @@ else:
             id_pack = i
     print(" |i| Najmniej ekonomiczna paczka:\t\t\tPACZKA NR [{}]".format(
         id_pack + 1))
-    #file_out.write("Nieekonomiczna paczka: [{}].\n".format(id_pack + 1))
+    file_out.write("Nieekonomiczna: PACZKA NR [{}].\n".format(id_pack + 1))
+    file_out.write("* * * * * * * * * * * * * * * * * * * * * * * * * * *\n")
 dividing_line("*", 80)
 file_in.close()
-#file_out.close()
+file_out.close()

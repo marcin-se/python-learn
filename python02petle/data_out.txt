@@ -1,1 +1,30 @@
-
+		 DEKLAROWANA lICZBA PRZESYŁEK: 16.
+* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ Przesyłka nr 1.	 9.750 kg	PACZKA NR [1]
+ Przesyłka nr 2.	 9.000 kg	PACZKA NR [1]
+ Przesyłka nr 3.	 2.080 kg	PACZKA NR [2]
+	 >>> PACZKA NR [1]	(18.750 kg)	status: wysłana
+ Przesyłka nr 4.	 9.900 kg	PACZKA NR [2]
+ Przesyłka nr 5.	 1.100 kg	PACZKA NR [2]
+ Przesyłka nr 6.	 7.770 kg	PACZKA NR [3]
+	 >>> PACZKA NR [2]	(13.080 kg)	status: wysłana
+ Przesyłka nr 7.	 6.050 kg	PACZKA NR [3]
+ Przesyłka nr 8.	 8.330 kg	PACZKA NR [4]
+	 >>> PACZKA NR [3]	(13.820 kg)	status: wysłana
+ Przesyłka nr 9.	 5.880 kg	PACZKA NR [4]
+ Przesyłka nr 10.	 4.470 kg	PACZKA NR [4]
+ Przesyłka nr 11.	 1.370 kg	PACZKA NR [5]
+	 >>> PACZKA NR [4]	(18.680 kg)	status: wysłana
+ Przesyłka nr 12.	 2.510 kg	PACZKA NR [5]
+ Przesyłka nr 13.	 2.000 kg	PACZKA NR [5]
+ Przesyłka nr 14.	 5.500 kg	PACZKA NR [5]
+ Przesyłka nr 15.	 3.000 kg	PACZKA NR [5]
+ Przesyłka nr 16.	 9.123 kg	PACZKA NR [6]
+	 >>> PACZKA NR [5]	(14.380 kg)	status: wysłana
+	 >>> PACZKA NR [6]	( 9.123 kg)	status: wysłana
+* * * * * * * * * * * * * * * * * * * * * * * * * * *
+Razem PACZEK: 6, w tym przesyłek: 16.
+Łączna waga wysłanych przesyłek: 87.833 kg.
+Pusta przestrzeń w paczkach: 32.167 kg.
+Nieekonomiczna: PACZKA NR [6].
+* * * * * * * * * * * * * * * * * * * * * * * * * * *
