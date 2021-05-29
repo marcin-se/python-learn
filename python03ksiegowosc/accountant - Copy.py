@@ -54,14 +54,15 @@ while 1:
             break
         if inputData == "zakup":
             if accountBalance < (unitPrice * quantity):
-                print(" Za mało kasy! Brakuje {} gr".format(
-                                int(accountBalance - (unitPrice * quantity)))
+                print(" Na koncie firmowym pozostało {:8d} gr".format(
+                                                         int(accountBalance)))
+                print(" To za mało na dokonanie przedmiotowego zakupu.")
             continue
             else:
                 accountBalance -= (unitPrice * quantity)
         elif inputData == "sprzedaż":
             if True:   # sprawdz, czy nie ma w magazynie?
-                print(" Za mało asortymentu.")
+                print(" Mamy niewystarczającą ilość asortymentu.")
         continue
             else:
                 pass    # jak jest, sprzedajemy!
