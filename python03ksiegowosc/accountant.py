@@ -15,13 +15,16 @@ inData = ""
 accountBalance, operation = 0, 0
 
 while inData != "stop":
+    takeData = input()
+    argvCurrent = takeData.split()
+    inData = str(argvCurrent[0])
 
     with open(pathHis, "r+") as fileHis:   # <<< askHistory
         fileLine = fileHis.readlines()
         for line in fileLine:
             newLine = line.rstrip('\n')
             askHistory.append(line)
-        accountBalance = int(askHistory[-1])
+            accountBalance = (askHistory[-1])
         askHistory.pop()
 
     with open(pathSts, "r+") as fileSts:   # <<< stockStatus
@@ -31,10 +34,6 @@ while inData != "stop":
             val = pair[1].rstrip()
             key = pair[0]
             stockStatus[key] = val
-
-    takeData = input()
-    argvCurrent = takeData.split()
-    inData = str(argvCurrent[0])
 
     if inData == "saldo":
         if len(argvCurrent) != 3:
