@@ -1,0 +1,472 @@
+﻿C:\Users\mksse\GIT\MUZYKA>ls -la
+total 9
+drwxr-xr-x    3 Marcin S Administ     4096 May 12 01:11 .
+drwxr-xr-x    4 Marcin S Administ     4096 May 11 23:59 ..
+drwxr-xr-x    7 Marcin S Administ     4096 May 12 01:08 .git
+-rw-r--r--    1 Marcin S Administ        3 May 12 01:11 historia.txt
+-rw-r--r--    1 Marcin S Administ       95 May 12 01:06 piosenka.txt
+-rw-r--r--    1 Marcin S Administ      331 May 12 01:01 refren.txt
+-rw-r--r--    1 Marcin S Administ      257 May 12 00:17 zwrotka-1.txt
+-rw-r--r--    1 Marcin S Administ      227 May 12 00:27 zwrotka-2.txt
+-rw-r--r--    1 Marcin S Administ      201 May 12 00:32 zwrotka-3.txt
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+C:\Users\mksse\GIT\MUZYKA>git log -p piosenka.txt
+commit 619bf2905bd80812036f0b4d83ab0115033fa4db (HEAD -> master)
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 03:08:49 2021 +0200
+
+    Zmieniono nazwe pliku 'refren-1.txt' na 'refren.txt' i dokonano korekty w pliku 'piosenka.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index f99cbb7..c45e011 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -1,11 +1,11 @@
+ ﻿zwrotka-1.txt
+
+-       refren-1.txt
++       refren.txt
+
+ zwrotka-2.txt
+
+-       refren-2.txt
++       refren.txt
+
+ zwrotka-3.txt
+
+-       refren-3.txt
+\ No newline at end of file
++       refren.txt
+\ No newline at end of file
+
+commit 01e891908a05e7e32128b3ecf46099ab7dc46c5a
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:35:20 2021 +0200
+
+    Przeniesiono refren do pliku 'refren-3.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 9ba6434..f99cbb7 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -8,13 +8,4 @@ zwrotka-2.txt
+
+ zwrotka-3.txt
+
+-       Budujemy nasz dom na piasku,
+-       cena nie gra roli dziś,
+-       kupiliśmy prawie wszystko,
+-       ale wciąż nie mamy nic.
+-       Chcę pozbierać znowu myśli,
+-       słyszeć bicie naszych serc,
+-       widzieć ile szczęścia w sobie,
+-       kryje każda mała rzecz.
+-       Cieszmy się z małych rzeczy,
+-       bo wzór na szczęście w nich zapisany jest!
+\ No newline at end of file
++       refren-3.txt
+\ No newline at end of file
+
+commit 1695acded1b7408698bc2e2f148539f6e11687b0
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:33:33 2021 +0200
+
+    Przeniesiono zwrotke 3 do pliku 'zwrotka-3.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 2167ba3..9ba6434 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -6,14 +6,7 @@ zwrotka-2.txt
+
+        refren-2.txt
+
+-I będzie jak dawniej,
+-przestańmy się spieszyć,
+-zacznijmy od nowa,
+-od tych małych rzeczy.
+-I będzie jak dawniej,
+-przestańmy się spieszyć,
+-zacznijmy od nowa,
+-od tych małych rzeczy.
++zwrotka-3.txt
+
+        Budujemy nasz dom na piasku,
+        cena nie gra roli dziś,
+
+commit 78fadbb6710ea2b0b29d2cdbb198284a7b6eb411
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:30:35 2021 +0200
+
+    Przeniesiono refren do pliku 'refren-2.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 308265e..2167ba3 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -4,16 +4,7 @@
+
+ zwrotka-2.txt
+
+-       Budujemy nasz dom na piasku,
+-       cena nie gra roli dziś,
+-       kupiliśmy prawie wszystko,
+-       ale wciąż nie mamy nic.
+-       Chcę pozbierać znowu myśli,
+-       słyszeć bicie naszych serc,
+-       widzieć ile szczęścia w sobie,
+-       kryje każda mała rzecz.
+-       Cieszmy się z małych rzeczy,
+-       bo wzór na szczęście w nich zapisany jest!
++       refren-2.txt
+
+ I będzie jak dawniej,
+ przestańmy się spieszyć,
+
+commit 895aaa086dc40f122aac58ec9b79741ffa90d389
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:28:01 2021 +0200
+
+    Przeniesiono zwrotke 2 do pliku 'zwrotka-2.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 583c2c9..308265e 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -2,14 +2,7 @@
+
+        refren-1.txt
+
+-Między nami znów zaiskrzy,
+-odnajdziemy blask i wdzięk,
+-zakończymy smutny shopping
+-sztucznych, galerianych szczęść.
+-I będzie jak dawniej,
+-przestańmy się spieszyć,
+-zacznijmy od nowa,
+-od tych małych rzeczy.
++zwrotka-2.txt
+
+        Budujemy nasz dom na piasku,
+        cena nie gra roli dziś,
+
+commit 4e77ff5e34b2981bc992168fde13dc011e8d5824
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:24:18 2021 +0200
+
+    Przeniesiono refren do pliku 'refren-1.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 8cb1350..583c2c9 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -1,15 +1,6 @@
+ ﻿zwrotka-1.txt
+
+-       Budujemy nasz dom na piasku,
+-       cena nie gra roli dziś,
+-       kupiliśmy prawie wszystko,
+-       ale wciąż nie mamy nic.
+-       Chcę pozbierać znowu myśli,
+-       słyszeć bicie naszych serc,
+-       widzieć ile szczęścia w sobie,
+-       kryje każda mała rzecz.
+-       Cieszmy się z małych rzeczy,
+-       bo wzór na szczęście w nich zapisany jest!
++       refren-1.txt
+
+ Między nami znów zaiskrzy,
+ odnajdziemy blask i wdzięk,
+
+commit 7cfa374b0c2edc8013a4f7e8657a5d9be231fc15
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:20:05 2021 +0200
+
+    Przeniesiono zwrotke 1 do pliku 'zwrotka-1.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+index 630eea6..8cb1350 100644
+--- a/piosenka.txt
++++ b/piosenka.txt
+@@ -1,12 +1,4 @@
+-﻿Żadne z nas już nie pamięta,
+-jak beztrosko biegły dni,
+-wiele nam nie było trzeba,
+-ja i Ty i długo nic.
+-Nie zadawaliśmy pytań,
+-nie prowadziliśmy gier,
+-dziś kalkulujemy wszystko,
+-nie ma w tym szaleństwa, wiem.
+-Co z tym możemy zrobić?
++﻿zwrotka-1.txt
+
+        Budujemy nasz dom na piasku,
+        cena nie gra roli dziś,
+
+commit 2a8ccae81d06724b09fd8596abe4d1b42bde7923
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:01:43 2021 +0200
+
+    Dodanie pliku 'piosenka.txt'
+
+diff --git a/piosenka.txt b/piosenka.txt
+new file mode 100644
+index 0000000..630eea6
+--- /dev/null
++++ b/piosenka.txt
+@@ -0,0 +1,60 @@
++﻿Żadne z nas już nie pamięta,
++jak beztrosko biegły dni,
++wiele nam nie było trzeba,
++ja i Ty i długo nic.
++Nie zadawaliśmy pytań,
++nie prowadziliśmy gier,
++dziś kalkulujemy wszystko,
++nie ma w tym szaleństwa, wiem.
++Co z tym możemy zrobić?
++
++       Budujemy nasz dom na piasku,
++       cena nie gra roli dziś,
++       kupiliśmy prawie wszystko,
++       ale wciąż nie mamy nic.
++       Chcę pozbierać znowu myśli,
++       słyszeć bicie naszych serc,
++       widzieć ile szczęścia w sobie,
++       kryje każda mała rzecz.
++       Cieszmy się z małych rzeczy,
++       bo wzór na szczęście w nich zapisany jest!
++
++Między nami znów zaiskrzy,
++odnajdziemy blask i wdzięk,
++zakończymy smutny shopping
++sztucznych, galerianych szczęść.
++I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
++
++       Budujemy nasz dom na piasku,
++       cena nie gra roli dziś,
++       kupiliśmy prawie wszystko,
++       ale wciąż nie mamy nic.
++       Chcę pozbierać znowu myśli,
++       słyszeć bicie naszych serc,
++       widzieć ile szczęścia w sobie,
++       kryje każda mała rzecz.
++       Cieszmy się z małych rzeczy,
++       bo wzór na szczęście w nich zapisany jest!
++
++I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
++I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
++
++       Budujemy nasz dom na piasku,
++       cena nie gra roli dziś,
++       kupiliśmy prawie wszystko,
++       ale wciąż nie mamy nic.
++       Chcę pozbierać znowu myśli,
++       słyszeć bicie naszych serc,
++       widzieć ile szczęścia w sobie,
++       kryje każda mała rzecz.
++       Cieszmy się z małych rzeczy,
++       bo wzór na szczęście w nich zapisany jest!
+\ No newline at end of file
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+C:\Users\mksse\GIT\MUZYKA>git log -p refren.txt
+commit 619bf2905bd80812036f0b4d83ab0115033fa4db (HEAD -> master)
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 03:08:49 2021 +0200
+
+    Zmieniono nazwe pliku 'refren-1.txt' na 'refren.txt' i dokonano korekty w pliku 'piosenka.txt'
+
+diff --git a/refren.txt b/refren.txt
+new file mode 100644
+index 0000000..31574a0
+--- /dev/null
++++ b/refren.txt
+@@ -0,0 +1,11 @@
++﻿       Budujemy nasz dom na piasku,
++       cena nie gra roli dziś,
++       kupiliśmy prawie wszystko,
++       ale wciąż nie mamy nic.
++       Chcę pozbierać znowu myśli,
++       słyszeć bicie naszych serc,
++       widzieć ile szczęścia w sobie,
++       kryje każda mała rzecz.
++       Cieszmy się z małych rzeczy,
++       bo wzór na szczęście w nich zapisany jest!
++
+
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+C:\Users\mksse\GIT\MUZYKA>git log -p zwrotka-1.txt
+commit 97fbaf655dac6da6900396e34aa45ff16d02712b
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:14:38 2021 +0200
+
+    Utworzono odrebny plik 'zwrotka-1.txt'
+
+diff --git a/zwrotka-1.txt b/zwrotka-1.txt
+new file mode 100644
+index 0000000..c130dca
+--- /dev/null
++++ b/zwrotka-1.txt
+@@ -0,0 +1,9 @@
++﻿Żadne z nas już nie pamięta,
++jak beztrosko biegły dni,
++wiele nam nie było trzeba,
++ja i Ty i długo nic.
++Nie zadawaliśmy pytań,
++nie prowadziliśmy gier,
++dziś kalkulujemy wszystko,
++nie ma w tym szaleństwa, wiem.
++Co z tym możemy zrobić?
+
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+C:\Users\mksse\GIT\MUZYKA>git log -p zwrotka-2.txt
+commit 1673e039c806994f53cc5a97ce78dbfe5297cece
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:27:07 2021 +0200
+
+    Utworzono odrebny plik 'zwrotka-2.txt'
+
+diff --git a/zwrotka-2.txt b/zwrotka-2.txt
+new file mode 100644
+index 0000000..93d876b
+--- /dev/null
++++ b/zwrotka-2.txt
+@@ -0,0 +1,8 @@
++﻿Między nami znów zaiskrzy,
++odnajdziemy blask i wdzięk,
++zakończymy smutny shopping
++sztucznych, galerianych szczęść.
++I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
+
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+C:\Users\mksse\GIT\MUZYKA>git log -p zwrotka-3.txt
+commit 1695acded1b7408698bc2e2f148539f6e11687b0
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:33:33 2021 +0200
+
+    Przeniesiono zwrotke 3 do pliku 'zwrotka-3.txt'
+
+diff --git a/zwrotka-3.txt b/zwrotka-3.txt
+index 5f28270..aff2cce 100644
+--- a/zwrotka-3.txt
++++ b/zwrotka-3.txt
+@@ -1 +1,8 @@
+-﻿
+\ No newline at end of file
++﻿I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
++I będzie jak dawniej,
++przestańmy się spieszyć,
++zacznijmy od nowa,
++od tych małych rzeczy.
+
+commit 4af97beaa8d5acf4ca28953923447df6954feed3
+Author: Marcin Serafin <mks.serafin@hotmail.com>
+Date:   Wed May 12 02:32:02 2021 +0200
+
+    Utworzono odrebny plik 'zwrotka-3.txt'
+
+diff --git a/zwrotka-3.txt b/zwrotka-3.txt
+new file mode 100644
+index 0000000..5f28270
+--- /dev/null
++++ b/zwrotka-3.txt
+@@ -0,0 +1 @@
++﻿
+\ No newline at end of file
+
+
+-----------------------------------------------------------------------------------------------
+|
+|
+|
+|
+|
+|
+|
+|
+-----------------------------------------------------------------------------------------------
+
+
+C:\Users\mksse\GIT\MUZYKA>git log -p refren-1.txt
+fatal: ambiguous argument 'refren-1.txt': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+C:\Users\mksse\GIT\MUZYKA>git log -p refren-2.txt
+fatal: ambiguous argument 'refren-2.txt': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+C:\Users\mksse\GIT\MUZYKA>git log -p refren-3.txt
+fatal: ambiguous argument 'refren-3.txt': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
