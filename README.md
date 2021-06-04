@@ -7,10 +7,14 @@
 
 2. Pomyślnie sklonowano repozytorium zdalne do kompa.
 
-3. W repozytorium są trzy katalogi:
+3. W repozytorium jest pięć katalogów:
 
-	python01procent		- zawierający program z wyliczeniami kosztów kredytów.
+	py00muzyka		- zawierający pierwszy mój program (tekst piosenki).
+	
+	py01procent		- zawierający program z wyliczeniami kosztów kredytów.
 
-	python02pakowacz	- zawierający program żąglujący przesyłkami i paczkami.
+	py02pakowacz	- zawierający program żąglujący przesyłkami i paczkami.
 
-	python03ksiegowosc	- zawierający program z obsługi księgowości i magazynu w firmie.
+	py03ksiegowosc	- zawierający program z obsługi księgowości i magazynu w firmie.
+
+	py04szkola			- zawierający program - ewidencja uczniów i nauczycieli.
