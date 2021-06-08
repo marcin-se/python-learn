@@ -1,35 +1,12 @@
 # SZKOŁA v1.0
 # -*- coding: UTF-8 -*-
-import sys, os, shelve
+import sys, os
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 fileBase = open("baza.txt", "w+", encoding="utf8")
 fileBase.close()
 
-
-def school_ask():
-    print("Chcesz uzyskać informację o: ", end="")
-    return str(input())
-
-
-class Person:
-    def __init__(self, firstname, lastname):
-        self.firstname = firstname
-        self.lastname = lastname
-    def view(self):
-        print("{} {}".format(self.firstname, self.lastname))
-
-
-class Logger:
-    def __init__(self, Person):
-        self.list = []
-    def add(self):
-        self.list.append(msg)
-    def print(self):
-        print("\n".join(self.list))
-        self.list = []
-
-
+'''
 class Pupil:
     def __init__(self, clas):
         self.clas = clas
@@ -40,7 +17,6 @@ class Pupil:
         print("Zamówiono {} liczbę sztuk".format(howmuch))
     def price(self, howmuch):
         return howmuch * self.price
-
 
 class Teacher:
     def __init__(self, price, size):
@@ -56,7 +32,6 @@ class Teacher:
         packs = int((howmuch + self.size - 1) / self.size)
         return packs * self.price
 
-
 class Educator:
     def __init__(self, price, loss, unit):
         self.price = price
@@ -69,121 +44,228 @@ class Educator:
         print("Zamówiono {} ({})".format(howmuch, self.unit))
     def price(self, howmuch):
         return self.price * howmuch * (1 + self.loss)
+'''
 
-
-positions: tuple = ("uczeń", "nauczyciel", "wychowawca")
+positions: tuple = ("Uczeń", "Nauczyciel", "Wychowawca")
 classes: tuple = ("1a", "1b", "1c", "1d", "2a", "2b", "2c", "2d", "3a", "3b",
                   "3c", "3d")
-subjects: tuple = ("polski", "angielski", "matematyka", "geografia", "fizyka",
-                   "biologia", "chemia")
+subjects: tuple = ("język polski", "angielski", "matematyka", "geografia",
+                   "fizyka", "biologia", "chemia")
 persons: dict = {
-    "Adam Nowak": {"status": 0, "klasa": "1a"},
-    "Aleksandra Wrona": {"status": 0, "klasa": "2a"},
+    "Adam Nowak": {"status": "Uczeń", "klasa": ("1a")},
+    "Aleksandra Wrona": {"status": "Uczeń", "klasa": ("2b")},
     "Wiesław Zasada": {
-        "status": 1,
-        "przedmiot": "jezyk polski",
-        "klasa": ["1a", "1b", "1c", "2a", "2b",
-                  "2c", "3a", "3b", "3c"]
-    },
+            "status": "Nauczyciel",
+            "przedmiot": "jezyk polski",
+            "klasa": ("1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c")},
     "Danuta Rinn": {
-        "status": 1,
-        "przedmiot": "matematyka",
-        "klasa": ["1a", "1c", "2a", "2b", "3b", "3d"]
-    },
+            "status": "Nauczyciel",
+            "przedmiot": "matematyka",
+            "klasa": ("1a", "1c", "2a", "2b", "3b", "3d")},
     "Bogdan Smoleń": {
-        "status": 2,
-        "klasa": ["1a", "2b", "3d"]
-    },
+            "status": "Wychowawca",
+            "klasa": ("1a", "1c", "2c", "3a")},
     "Genowefa Pigwa": {
-        "status": 2,
-        "klasa": ["2a", "3a"]
-    },
-}
+            "status": "Wychowawca",
+            "klasa": ("1b", "2a", "2b", "3a")},
+    }
+pupils: list = ["Adam Nowak", "Aleksandra Wrona"]
+teachers: list = ["Wiesław Zasada", "Danuta Rinn"]
+educators: list = ["Bogdan Smoleń", "Genowefa Pigwa"]
+
+def print_info(nm = "", **opcje):
+    if opcje.get("get") == "stat": return persons[nm]["status"]
+    if opcje.get("get") == "sub": return persons[nm]["przedmiot"]
+    if opcje.get("get") == "kl": return persons[nm]["klasa"]
 
 def print_pupils(kl = ""):
     info = persons.copy()
     i = 0
     for key, value in info.items():
-        if value["status"] == 0 and value["klasa"] == kl:
+        if value["status"] == "Uczeń" and value["klasa"] == kl:
             i += 1
             print("{}. {}".format(i, key))
-    if i == 0:
+    if not i:
         print("Brak uczniów w tej klasie.")
     print("")
 
-def print_pupil(nm = ""):
+def print_person(nm = ""):
+    status = print_info(nm, get="stat")
+    clas = print_info(nm, get="kl")
+    if status == "Uczeń":
+        print("{}: {}, klasa: {}".format(status, nm, clas))
+    elif status == "Nauczyciel":
+        subject = print_info(nm, get="sub")
+        print("{}: {}, przedmiot: {}".format(status, nm, subject))
+    elif status == "Wychowawca":
+        print("{}: {}".format(status, nm))
+    print("")
+
+def if_pupil(nm = ""):
+    info = persons.copy()
+    clas = print_info(nm, get="kl")
+    i = 0
+    for key, value in info.items():
+        if persons[key]["status"] == "Nauczyciel":
+            for i in range(len(persons[key]["klasa"])):
+                if clas == persons[key]["klasa"][i]:
+                    print_person(key)
+    if not i:
+        print("Uczeń {} nie ma zajęć z żadnym nauczycielem.".format(nm))
+    print("")
+
+def if_teacher(nm = ""):
+    info = persons.copy()
+    status = print_info(nm, get="stat")
+    clas = print_info(nm, get="kl")
+    i = 0
+    for key, value in info.items():
+        if persons[key]["status"] == "Wychowawca":
+            for i in range(len(persons[key]["klasa"])):
+                for j in range(len(clas)):
+                    if persons[key]["klasa"][i] == clas[j]:
+                        print("Klasa", clas[j], end=". ")
+                        print_person(key)
+    if not i:
+        print("Brak korelacji tego nauczyciela z wychowawcami.")
+    print("")
+
+def if_educator(nm = ""):
+    info = persons.copy()
+    clas = print_info(nm, get="kl")
+    i = 0
+    for key, value in info.items():
+        if persons[key]["status"] == "Uczeń":
+            for i in range(len(clas)):
+                if persons[key]["klasa"] == clas[i]:
+                        print("Klasa", clas[i])
+                        print_pupils(clas[i])
+    if not i:
+        print("Brak uczniów, których prowadzi ten wychowawca.")
+    print("")
+
+def if_klasa(kl = ""):
     info = persons.copy()
     i = 0
     for key, value in info.items():
-        if value["status"] == 1:
-            if persons[nm]["klasa"] == value["klasa"]:
-                i += 1
-                print("{}. Nauczyciel: {}, przedmiot: {}".format(
-                    i, key, value["przedmiot"]))
-    if i == 0:
-        print("{} nie ma zajęć.".format(nm))
+        clas = print_info(key, get="kl")
+        status = print_info(key, get="stat")
+        for i in range(len(persons[key]["klasa"])):
+            if status == "Wychowawca" and clas[i] == kl:
+                print_person(key)
+                print_pupils(kl)
+    if not i:
+        print("Do tej klasy nikt nie należy.")
     print("")
 
-def print_teacher(nm = ""):
-    info = persons.copy()
-    i = 0
-    print("{}, uczy z przedmiotu: {}.".format(nm, persons[nm]["przedmiot"]))
-    for key, value in info.items():
-        if value["status"] == 2:
-            for klasa in range(len(persons[nm]["klasa"])):
-                if value["klasa"][i] == persons[nm]["klasa"]:
-                    print("Klasa {}:, wychowawca: {}\n".format(value["klasa"][i], nm))
-                    i += 1
-    if i == 0:
-        print("Brak wychowawców.")
-    print("")
 
-def print_educator(nm = ""):
-    info = persons.copy()
-    for key, value in info.items():
-        if value["status"] == 2:
-            print("{}, prowadzi klasy:".format(nm))
-            for k in range(len(value["klasa"])):
-                print("{}".format(value["klasa"][k]))
-    print("")
+if len(sys.argv) == 2:
+    data_ask = sys.argv[2]
 
-def print_klasa(name = ""):
-    #info = shelve.open("baza")
-    klasa = classes.index(kl)
-    info = persons.copy()
-    for key, value in info.items():
-        if value["status"] == 2:
-            print("{}: {}, klasy:".format(info.get("status"), key))
-            for k in range(len(value["klasa"])):
-                print("{}".format(value["klasa"][k]))
-    print("")
-
-'''
-    for i in range(len(info)):
-        for j in range(len(info.items())):
-            if n in info.items():
-                print("Uczniowie: {}\n".format(info([k][n])))
-'''
-print("Uczniowie: ")
-print_pupils("1a")
-
-print("Uczeń: ", end="")
-pupil = "Aleksandra Wrona"
-print_pupil(pupil)
-
-print("Nauczyciel: ", end="")
-teacher = "Danuta Rinn"
-print_teacher(teacher)
-
-print("Wychowawca: ", end="")
-educator = "Genowefa Pigwa"
-print_educator(educator)
+    pupil = "Aleksandra "
+    teacher = "Danuta Rinn"
+    educator = "Genowefa Pigwa"
+    print_pupils("1a")
+    print_person(pupil)
+    if_pupil(pupil)
+    print_person(teacher)
+    if_teacher(teacher)
+    print_person(educator)
+    x = print_info(educator, get="kl")
+    print(x)
+    print_person(educator)
+    if_educator(educator)
+    if_klasa("2b")
 
 
-'''
-print("Nauczyciele: {}".format())
-print("Wychowawcy: {}".format())
 
-t = raw_input("Wpisz liczbę od 1 do 59>")
-print("Wartość: {}".format(print_uczen()))
-'''
+if len(sys.argv) == 1:
+    get_data = ""
+    print("[[Aby zakończyć, wpisz 'koniec']]")
+    while 1:
+        # (2) POBRANIE FUNKCJI I NAZWISKA
+        print("Podaj, stanowisko osoby wprowadzanej: ", end="")
+        get_data = str.title(input().strip())
+        firstname, lastname, status, right_data = "", "", "", 0
+        class_list: list = []
+        if get_data == "koniec":
+            print("Zakończono wprowadzanie danych.")
+            break
+        elif get_data not in positions:
+            print("Wprowadzono nieprawidłowe dane.")
+        else:
+            print('Podaj nazwisko osoby wprowadzanej: ', end="")
+            lastname = str.title(input()).strip()
+            print('Podaj, imie osoby wprowadzanej: ', end="")
+            firstname = str.title(input()).strip()
+            full_name = firstname + " " + lastname
+            if full_name in pupils or full_name in teachers or full_name in educators:
+                print("Podana osoba istnieje już w bazie danych.")
+                continue
+            if get_data == "Uczeń":
+                pupils.append(full_name)
+                print('Podaj, do jakiej klasy należy uczeń? (np. 1a ) ', end="")
+                clas = str.strip(input())
+                clas.lower()
+                if clas in classes:
+                    persons = {
+                        full_name: {
+                            "status": "Uczeń",
+                            "klasa": clas}
+                    }
+                    right_data = 1
+                else:
+                    print("Podana klasa nie istnieje.")
+                    continue
+            elif get_data == "Nauczyciel":
+                teachers.append(full_name)
+                print('Podaj, jakiego przedmiotu uczy? (np. angielski) ', end="")
+                subject = str.strip(input())
+                subject.lower()
+                if not subject in subjects:
+                    print("Podanego przedmiotu nie uczą w tej szkole.")
+                    continue
+                print("[[Aby zakończyć, pozostaw pustą linię + 'ENTER']]")
+                while get_data != "":
+                    print('Podaj, jaką klasę uczy? (np. 1a) ', end="")
+                    clas = str.strip(input())
+                    clas.lower()
+                    if clas in classes:
+                        class_list.append(clas)
+                        right_data = 1
+                    else:
+                        print("Podana klasa nie istnieje.")
+                        continue
+                persons = {
+                    full_name: {
+                        "status": "Nauczyciel",
+                        "przedmiot": subject,
+                        "klasa": class_list}
+                }
+            elif get_data == "Wychowawca":
+                educators.append(full_name)
+                print("[[Aby zakończyć, pozostaw pustą linię + 'ENTER']]")
+                clas = " "
+                while clas != "":
+                    print('Podaj, którą klasę prowadzi? (np. 1a) ', end="")
+                    clas = str.strip(input())
+                    clas.lower()
+                    if clas in classes:
+                        class_list.append(clas)
+                        right_data = 1
+                    else:
+                        print("Podana klasa nie istnieje.")
+                        continue
+                persons = {
+                    full_name: {
+                        "status": "Wychowawca",
+                        "klasa": class_list}
+                }
+            clas = ""
+            if right_data:
+                print("Wprowadzono osobę do bazy.")
+            else:
+                print("Podano za mało danych, by dodać osobę do bazy.")
+                continue
+
+
