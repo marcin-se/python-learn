@@ -1,0 +1,6 @@
+truskawki:360
+banany:349
+rollsroys:1
+pomarańcze:112
+rowerek:6
+gruszki:2
