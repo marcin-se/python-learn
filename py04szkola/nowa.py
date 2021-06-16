@@ -52,7 +52,7 @@ class Group:
         self.name = name
         self.educator = ""
         self.pupils = []
-        self.teachers = {}
+        self.teachers = []
 
 class Person:
     def __init__(self, name):
@@ -65,7 +65,7 @@ class Person:
     def get_state (self):
         return self.state
     def get_group (self):
-        return sorted(self.group)
+        return self.group
     def get_subject (self):
         return self.subject
 
@@ -73,12 +73,14 @@ class Pupil(Person):
     def set_state(self):
         self.state = "uczeń"
     def set_group(self, group):
-        if group in groups:
-            group_obj = groups[group]
+        if group in list_groups:
+            ind = list_groups.index(group)
+            group_obj = list_groups[ind]
         else:
             group_obj = Group(group)
-            groups[group] = group_obj
+            list_groups.append(group_obj)
         self.group.append(group)
+        self.group = sorted(self.group)
         group_obj.pupils.append(self)
 
 class Teacher(Person):
@@ -87,28 +89,35 @@ class Teacher(Person):
     def set_subject(self, subject):
         self.subject = subject
     def set_group(self, group):
-        if group in groups:
-            group_obj = groups[group]
+        if group in list_groups:
+            ind = list_groups.index(group)
+            group_obj = list_groups[ind]
         else:
             group_obj = Group(group)
-            groups[group] = group_obj
+            list_groups.append(group_obj)
         self.group.append(group)
+        self.group = sorted(self.group)
         group_obj.teachers[self.name] = self.subject
 
 class Educator(Person):
     def set_state(self):
         self.state = "wychowawca"
     def set_group(self, group):
-        if group in groups:
-            group_obj = groups[group]
+        if group in list_groups:
+            ind = list_groups.index(group)
+            group_obj = list_groups[ind]
         else:
             group_obj = Group(group)
-            groups[group] = group_obj
+            list_groups.append(group_obj)
         self.group.append(group)
+        self.group = sorted(self.group)
         group_obj.educator = self.name
 
 states: tuple = ("uczeń", "nauczyciel", "wychowawca")
-groups: dict = {} # name, educator, [pupils], [teachers]
+list_groups: list = [] # name, educator, [pupils], [teachers]
+list_pupils: list = [] # name, state, [group]
+list_teachers: list = [] # name, state, [group], subject
+list_educators: list = [] # name, state, [group]
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
@@ -132,60 +141,56 @@ groups: dict = {} # name, educator, [pupils], [teachers]
 #         if nm in classes:
 #             return subjects[classes][nm]["klasa"]
 
-def print_pupils(kl):
-    if kl in groups:
-        for i in range(len(groups[kl].pupils)):
-            print("{}. {}".format(i+1, groups[kl][pupils][i]))
-    else:
-        print("Brak uczniów w tej klasie.")
-
 def if_pupil(name):
-    kl = name.get_group()
-    for i in range(len(groups.items())):
-        if name in kl.groups.pupils:
-            if name in kl.groups.teachers:
-                print("Podany uczeń ma przedmioty:")
-                for key, value in kl.groups.teachers:
-                    print(value + ": " + key)
+    for i in range(len(list_groups)):
+        if name in list_groups[i].pupils:
+            kl = list_groups[i].name
+            print("Podany uczeń z klasą '{}' ma przedmioty:".format(kl))
+            for j in range(len(list_groups[i].teachers)):
+                teach = list_groups[i].teachers[j]
+                subj = Person.get_subject(teach)
+                print("Przedmiot: {}, nauczyciel: {}.".format(subj, teach))
         else:
             print("Błąd 'if_pupil'")
 
 def if_teacher(name):
-    for i in range(len(groups.items())):
-        if name in groups[i].teachers:
+    for i in range(len(list_groups.items())):
+        if name in list_groups[i].list_teachers:
             print("Podany nauczyciel ma zajęcia w klasach:")
             print("Klasa {}, wychowawca: {}".
-                  format(groups[i].name, groups[i].educator))
+                  format(list_groups[i].name, list_groups[i].educator))
         else:
             print("Błąd 'if_teacher'")
 
 def if_educator(name):
-    for i in range(len(groups.items())):
-        if name == groups[i].educator:
+    for i in range(len(list_groups.items())):
+        if name == list_groups[i].educator:
             print("Podany wychowawca prowadzi klasy:")
-            print("Klasa {}, uczniowie:".format(groups[i].name))
-            print_pupils(groups[i].name)
+            print("Klasa {}, uczniowie:".format(list_groups[i].name))
+            print_pupils(list_groups[i].name)
         else:
             print("Błąd 'if_educator'")
 
+def print_pupils(kl):
+    for i in range(len(list_groups)):
+        if kl == list_groups[i].name:
+            for j in range(len(list_groups[i].pupils)):
+                print("{}. {}".format(j+1, list_groups[i].pupils[j]))
+        else:
+            print("Błąd 'print_pupils'")
+
 def if_class(kl):
-    for i in range(len(groups.keys())):
-        if kl == groups[i]:
+    for i in range(len(list_groups)):
+        if kl == list_groups[i].name:
             print("Klasa: {}, wychowawca: {}.".format(
-                kl, groups[kl]["educator"]))
+                kl, list_groups[i].educator))
             print_pupils(kl)
         else:
             print("Błąd 'if_class'")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-argvCurrent: list = []
 get_data = ""
-
-pupils: dict = {}
-teachers: dict = {}
-educators: dict = {}
-classes: list = []
 clear_screen()
 
 if len(sys.argv) == 1:
@@ -200,16 +205,11 @@ if len(sys.argv) == 1:
             new_pupil.set_state()
             clase = str.lower(input("Klasa: "))
             new_pupil.set_group(clase)
+            list_pupils.append(new_pupil)
             # # zapis UCZNIA do pliku >>> baza.txt
             # with open(pathBase, "a+") as fileBase:
             #     fileBase.write("{}\n".format(pupils[full_name][clase]))
             # dividing_line()
-
-            dividing_line()
-            x = new_pupil.get_group()
-            print("{}: {} \t(klasa {})".format(
-                new_pupil.get_state(), new_pupil.get_name(), x[0]))
-            dividing_line()
 
         elif get_data == "nauczyciel":
             full_name = str.title(input("Imię Nazwisko: "))
@@ -219,19 +219,9 @@ if len(sys.argv) == 1:
             new_teacher.set_subject(new_subject)
             while 1:
                 clase = str.lower(input("Klasa: "))
-                if clase:
-                    new_teacher.set_group(clase)
-                else:
-                    break
-
-            dividing_line()
-            print("{}: {}\t (przedmiot: {})".format(new_teacher.get_state(),
-                new_teacher.get_name(), new_teacher.get_subject()))
-            dividing_line()
-            x = new_teacher.get_group()
-            for i in range(len(x)): print(f"{x[i]}  ", end="")
-            print()
-            dividing_line()
+                if clase: new_teacher.set_group(clase)
+                else: break
+            list_teachers.append(new_teacher)
             # # zapis NAUCZYCIELA do pliku >>> baza.txt
             # with open(pathBase, "a+") as fileBase:
             #     fileBase.write("{}\n".format(teachers[full_name][clase]))
@@ -242,30 +232,20 @@ if len(sys.argv) == 1:
             new_educator.set_state()
             while 1:
                 clase = str.lower(input("Klasa: "))
-                if clase:
-                    new_educator.set_group(clase)
-                else:
-                    break
+                if clase: new_educator.set_group(clase)
+                else: break
+            list_educators.append(new_educator)
             # # zapis WYCHOWAWCY do pliku >>> baza.txt
             # with open(pathBase, "a+") as fileBase:
             #     fileBase.write("{}\n".format(educators[full_name][clase]))
-
-            dividing_line()
-            print("{}: {}".format(
-                new_educator.get_state(), new_educator.get_name()))
-            dividing_line()
-            x = new_educator.get_group()
-            for i in range(len(x)): print(f"{x[i]}  ", end="")
-            print()
-            dividing_line()
 
         elif get_data == "koniec":
             break
 
     dividing_line()
-    print(groups)
+    print(list_groups)
     dividing_line()
-    print(len(groups.items()))
+    print(len(list_groups.items()))
     dividing_line()
     if_pupil("Jan Nowak")
     if_teacher("Sam Dan")
@@ -281,37 +261,18 @@ elif len(sys.argv) > 1:
     title_line("BAZA-SZKOŁA v1.2 (Przzegląd)")
     get_data = str.lower(sys.argv[1])
     while get_data != "koniec":
-        print("Tu jestem...")
         if len(sys.argv) == 2:
-            if sys.argv[1] in groups:
-                print("...a może 'in groups'")
-                if_class(get_data)
-            else:
-                print("Brak klasy w bazie danych!")
+            if sys.argv[1] in list_groups: if_class(get_data)
+            else: print("Brak klasy w bazie danych!")
             break
 
         elif len(sys.argv) == 3:
             full_name = str.title(sys.argv[2]) + " " + str.title(sys.argv[3])
-            if full_name:
-                print("...a może 'among people'")
-                if_pupil(full_name)
-                if_teacher(full_name)
-                if_educator(full_name)
-            else:
-                print("Brak podanej osoby w bazie danych!")
+            if full_name in list_pupils: if_pupil(full_name)
+            elif full_name in list_teachers: if_teacher(full_name)
+            elif full_name in list_educators: if_educator(full_name)
+            else: print("Brak podanej osoby w bazie danych!")
             break
-
-                # if full_name in teachers:
-                #     print("...a może 'in teachers'")
-                #     if_teacher(full_name)
-                # else:
-                #     print("Brak nauczyciela w bazie danych!")
-                #
-                # if full_name in educators:
-                #     print("...a może 'in educators'")
-                #     if_educator(full_name)
-                # else:
-                #     print("Brak wychowawcy w bazie danych!")
 
         else:
             print("Niewłaściwa liczba parametrów!")
