@@ -1,0 +1,28 @@
+1a
+<__main__.Group object at 0x0000020105AFE190>
+1b
+<__main__.Group object at 0x0000020105AEF670>
+2a
+<__main__.Group object at 0x0000020105AEF3A0>
+1c
+<__main__.Group object at 0x0000020105AFE160>
+2b
+<__main__.Group object at 0x0000020105AEF070>
+2c
+<__main__.Group object at 0x0000020105AE9FD0>
+1c
+<__main__.Group object at 0x00000251CBF4E190>
+2a
+<__main__.Group object at 0x00000251CBF3F3A0>
+2b
+<__main__.Group object at 0x00000251CBF39F70>
+1a
+<__main__.Group object at 0x00000251CBF39E50>
+2c
+<__main__.Group object at 0x00000251CBF39D30>
+1b
+<__main__.Group object at 0x00000251CBF39B50>
+1d
+<__main__.Group object at 0x00000251CBF39AF0>
+2d
+<__main__.Group object at 0x00000251CBF39BB0>

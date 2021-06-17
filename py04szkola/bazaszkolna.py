@@ -1,8 +1,14 @@
 # SZKOLA v1.3
 # -*- coding: UTF-8 -*-
-import sys, os, pickle
+import sys, os
+from my_library.moja_biblioteka import dict_from_file, dict_to_file
 
-pathCast: str = "obsada.txt"
+#  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !
+
+#           problemy w liniach: 252, 260-261, 262-263, 264-265
+
+#  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !
+
 pathBase: str = "baza.txt"
 
 def clear_screen():
@@ -55,10 +61,10 @@ class Group:
 class Person:
     # klasa bazowa dla klas: uczeń/nauczyciel/wychowawca
     def __init__(self, name):
-        self.name = None
-        self.state = None
-        self.group = None
-        self.subject = None
+        self.name = name
+        self.state = ""
+        self.group = []
+        self.subject = ""
     def get_name(self):
         return self.name
     def get_state (self):
@@ -79,7 +85,7 @@ class Pupil(Person):
             group_obj = Group(get_group)
             dict_groups[get_group] = group_obj
         self.group.append(group_obj)
-        group_obj.pupils.append(self)
+        group_obj.pupils.append(self.name)
     def if_pupil(self):
         if self.name in dict_groups:
             kl = dict_groups.__name__
@@ -182,16 +188,11 @@ class Educator(Person):
 #         print("Błąd 'if_class'")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# def main():
 
 clear_screen()
+# read data from <*.txt>
+dict_from_file("baza.txt")
 get_data = ""
-# data from <*.txt>
-with open(pathCast, "a+", encoding="utf8") as fileCast:
-    line_file = pickle.dumps(fileCast.readlines())
-    for line in line_file:
-        dict_groups = pickle.loads(line_file)
-
 if len(sys.argv) == 1:
     title_line(" (edycja) BAZA-SZKOŁA v1.3 ")
     while True:
@@ -239,35 +240,36 @@ if len(sys.argv) == 1:
             #     fileBase.write("{}\n".format(...)
             continue
 
-elif len(sys.argv) > 1:
+if len(sys.argv) > 1:
     title_line(" (przegląd) BAZA-SZKOŁA v1.3 ")
     get_data = str.lower(sys.argv[1])
-    while get_data != "koniec":
+    while 1:
+        if get_data == "koniec":
+            break
+
         if len(sys.argv) == 2:
-            if sys.argv[1] in dict_groups:
-                kl = sys.argv[1].get_group()
-                Group.if_class(kl)
+            if get_data in dict_groups:
+                Group.if_class(dict_groups[get_data].name)
             else: print("Brak klasy w bazie danych!")
             break
 
-        if len(sys.argv) == 3:
-            full_name = str.title(sys.argv[2]) + " " + str.title(sys.argv[3])
-
-            if full_name in dict_groups["pupils"]: Pupil.if_pupil(full_name)
-            elif full_name in dict_groups: Teacher.if_teacher(full_name)
-            elif full_name in dict_groups: Educator.if_educator(full_name)
+        if len(sys.argv) == 3 or len(sys.argv) == 4:
+            full_name = str.title(sys.argv[1]) + " " + str.title(sys.argv[2])
+            if len(sys.argv) == 4:
+                full_name += " " + str.title(sys.argv[3])
+            if full_name in dict_groups.values():
+                Pupil.if_pupil(dict_groups["pupils"][full_name])
+            elif full_name in dict_groups.values():
+                Teacher.if_teacher(dict_groups["teachers"][full_name])
+            elif full_name in dict_groups.values():
+                Educator.if_educator(dict_groups["educator"][full_name])
             else: print("Brak podanej osoby w bazie danych!")
             break
 
-        else:
-            print("Niewłaściwa liczba parametrów!")
+        if len(sys.argv) > 4:
+            print("Niewłaściwa liczba argumentów!")
             break
     input("Press any key to continue...")
 
-# data to <*.txt>
-with open(pathBase, "w+", encoding="utf8") as fileBase:
-    for line in dict_groups:
-        fileBase.write("{}\n".format(line))
-
-
-# if __name__ == "__main__": main()
+# save data to <*.txt>
+dict_to_file("baza.txt", dict_groups)
