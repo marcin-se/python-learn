@@ -5,7 +5,7 @@
 
 2. Pomyślnie sklonowano repozytorium zdalne do kompa.
 
-3. W repozytorium jest pięć katalogów:
+3. W repozytorium jest sześć katalogów:
 
 	py00muzyka	- zawierający pierwszy mój program (tekst piosenki).
 	
@@ -16,3 +16,5 @@
 	py03ksiegowosc	- zawierający program z obsługi księgowości i magazynu w firmie.
 
 	py04szkola	- zawierający program: ewidencja uczniów i nauczycieli.
+
+	py05ksiegi	- zawierający program: 'py03ksiegowosc' w oparciu o klasy, obiekty i własne moduły.
