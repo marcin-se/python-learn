@@ -4,14 +4,14 @@
 # data from <*.txt> to dict
 def dict_from_file(file_path):
     dictionary = {}
-    with open(file_path, "a+", encoding="utf8") as file:
+    with open(file_path) as file:
         while True:
-            read_key = file.readline()
+            read_key = file.readline().strip()
             if not read_key:
                 break
-            read_value = file.readline()
+            read_value = file.readline().strip()
             dictionary[read_key] = read_value
-    return dictionary
+        return dictionary
 
 # DICT >>> TXT
 # data from dict to <*.txt>
@@ -20,3 +20,4 @@ def dict_to_file(file_path, dictionary_name):
         for key, val in dictionary_name.items():
             file.write(str(key) + "\n")
             file.write(str(val) + "\n")
+    return

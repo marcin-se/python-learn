@@ -10,7 +10,7 @@ Jan Brzechwa
 2b
 
 nauczyciel
-Jan Dlugosz
+Jan Długosz
 jezyk polski
 1a
 1b
@@ -40,60 +40,63 @@ historia
 2a
 2b
 
-uczen
+uczeń
 Jan Brzechwa
 1a
 
-uczen
+uczeń
 Jan Długosz
 1a
 
-uczen
+uczeń
 Aleksander Fredro
 1b
 
-uczen
+uczeń
 Witold Gombrowicz
 1b
 
-uczen
+uczeń
 Zbigniew Herbert
 1c
 
-uczen
+uczeń
 Hanna Krall
 2a
 
-uczen
+uczeń
 Zygmunt Krasiński
 2a
 
-uczen
+uczeń
 Jan Andrzej Morsztyn
 2a
 
-uczen
+uczeń
 Małgorzata Musierowicz
 2b
 
-uczen
+uczeń
 Cyprian Kamil Norwid
 2b
 
-uczen
+uczeń
 Eliza Orzeszkowa
 1a
 
-uczen
+uczeń
 Bolesław Prus
+2c
+
+uczeń
 Juliusz Słowacki
 2c
 
-uczen
+uczeń
 Julian Tuwim
 2c
 
-uczen
+uczeń
 Stanisław Wyspiański
 2c
 
