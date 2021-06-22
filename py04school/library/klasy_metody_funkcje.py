@@ -1,5 +1,23 @@
 ### Biblioteka z klasami i funkcjami do obsługi szkolnych etatów ###
-# from bazaszkolna import dict_groups, group_objects
+
+
+# słownik zawierający dane słownikowe i listy
+groups_dict: dict = {}
+                # Struktura słownika:
+                #   dict_groups = {
+                #       nazwa klasy: {
+                #           educator: imię nazwisko,
+                #           pupils: [imię nazwisko, imię nazwisko, ... ],
+                #           teachers: {przedmiot: imię nazwisko,
+                #           przedmiot: imię nazwisko, ... }}
+
+
+# słownik zawierający nazwy grup jako klucze, wartości to obiekty
+group_objects: dict = {}
+                # Struktura słownika:
+                #   group_objects = { nazwa klasy: <__main__.Group object ...>,
+                #                     nazwa klasy: <__main__.Group object ...> }
+
 
 # klasa tworząca obiekty grup klasowych
 class Group:
@@ -57,92 +75,109 @@ class Educator:
         return self.groups
 
 
+# funkcja sprawdzająca istnienie grupy w słowniku
+def make_group(group_name, dict_name):
+    if group_name not in dict_name:
+        dict_name[group_name] = {}
+        dict_name[group_name]["pupils"] = []
+        dict_name[group_name]["teachers"] = {}
+        dict_name[group_name]["educator"] = ""
+    return dict_name
 
 
-# funkcja sprawdzająca m.in. istnienie obiektu grupy :)
-def make_group(name):
-    if name in group_objects:
-        new_group = group_objects[name]
+# funkcja sprawdzająca istnienie obiektu grupy w słowniku
+def make_group_obj(group_name, dict_name_obj):
+    if group_name not in dict_name_obj:
+        new_group_obj = Group(group_name)
+        dict_name_obj[group_name] = new_group_obj
     else:
-        dict_groups[name] = {}
-        new_group = Group(name)
-    return new_group
-
+        new_group_obj = dict_name_obj[group_name]
+    return new_group_obj
 
 
 # funkcja zwracająca odpowiedź na:  KLASA
-def if_class(name):
-    edu = dict_groups[name]["educator"]
-    print("W klasie {} wychowcą jest: {}".format(name, edu))
-    print("Uczniowie klasy {}:\n".format(name))
-    print_pupils(name)
+def if_class(cl_name, dict_name):
+    edu = dict_name[cl_name]["educator"]
+    print("W klasie '{}' wychowawcą jest:\n  {}".format(cl_name, edu))
+    print("Uczniowie:".format(cl_name))
+    return print_pupils(cl_name, dict_name)
 
-def if_class_obj(name):
-    edu = group_objects[name].educator
-    print("W klasie {} wychowcą jest: {}".format(name, edu))
-    print("Uczniowie klasy {}:\n".format(name))
-    print_pupils(name)
 
+# funkcja zwracająca odpowiedź na:  KLASA (obiektowo)
+def if_class_obj(cl_name, dict_name):
+    edu = group_objects[cl_name].educator
+    print("W klasie {} wychowcą jest: {}".format(cl_name, edu))
+    print("Uczniowie klasy {}:\n".format(cl_name))
+    print_pupils(cl_name, dict_name)
 
 
 # funkcja zwracająca odpowiedź na:  UCZEŃ
-def if_pupil(name):
-    for key, value in dict_groups.items():
-        if name in dict_groups[key]["pupils"]:
+def if_pupil(pup_name, dict_name):
+    for key, value in dict_name.items():
+        if pup_name in dict_name[key]["pupils"]:
             print("Klasa {} ma przedmioty:".format(key))
-            for sub, teach in dict_groups[key]["teachers"].items():
+            for sub, teach in dict_name[key]["teachers"].items():
                 print("Przedmiot: {}, nauczyciel: {}.".format(sub, teach))
 
-def if_pupil_obj(name):
-    for key, value in group_objects.items():
-        if name in value.pupils:
+
+# funkcja zwracająca odpowiedź na:  UCZEŃ (obiektowo)
+def if_pupil_obj(pup_name, dict_name):
+    for key, value in dict_name.items():
+        if pup_name in value.pupils:
             print("Klasa {} ma przedmioty:".format(key))
             for sub, teach in value.teachers.items():
                 print("Przedmiot: {}, nauczyciel: {}.".format(sub, teach))
 
 
-
 # funkcja zwracająca odpowiedź na:  NAUCZYCIEL
-def if_teacher(name):
+def if_teacher(teach_name, dict_name):
     print("Podany nauczyciel ma zajęcia w klasach:")
-    for key, value in dict_groups.items():
-        if name in dict_groups[key]["teachers"]:
-            edu = dict_groups[key]["educator"]
+    for key, value in groups_dict.items():
+        if teach_name in dict_name[key]["teachers"]:
+            edu = dict_name[key]["educator"]
             print("Klasa {}, wychowawca: {}".format(key, edu))
 
-def if_teacher_obj(name):
+
+# funkcja zwracająca odpowiedź na:  NAUCZYCIEL (obiektowo)
+def if_teacher_obj(teach_name, dict_name):
     print("Podany nauczyciel ma zajęcia w klasach:")
-    for key, value in group_objects.items():
-        if name in value.teachers:
+    for key, value in dict_name.items():
+        if teach_name in value.teachers:
             edu = value.educator
             print("Klasa {}, wychowawca: {}".format(key, edu))
 
 
-
 # funkcja zwracająca odpowiedź na:  WYCHOWAWCA
-def if_educator(name):
+def if_educator(edu_name, dict_name):
     print("Podany wychowawca prowadzi klasy:")
-    for key, value in dict_groups.items():
-        if name in dict_groups["educator"]:
+    for key, value in dict_name.items():
+        if edu_name in dict_name["educator"]:
             print("Klasa {}, uczniowie:".format(key))
-            print_pupils(key)
+            print_pupils(key, dict_name)
 
-def if_educator_obj(name):
+
+# funkcja zwracająca odpowiedź na:  WYCHOWAWCA (obiektowo)
+def if_educator_obj(edu_name, dict_name):
     print("Podany wychowawca prowadzi klasy:")
-    for key, val in group_objects.items():
-        if name in val.educator:
+    for key, val in dict_name.items():
+        if edu_name in val.educator:
             print("Klasa {}, uczniowie:".format(key))
-            print_pupils(key)
-
+            print_pupils(key, dict_name)
 
 
 # funkcja zwracająca listę uczniów danej klasy
-def print_pupils(clase_name):
-    if clase_name in dict_groups:
-        for value in dict_groups[clase_name]["pupils"]:
-            print(value)
+def print_pupils(cl_name, dict_name):
+    if cl_name in dict_name:
+        count = 0
+        for value in dict_name[cl_name]["pupils"]:
+            count += 1
+            print("{:2}) {}".format(count, value))
 
-def print_pupils_obj(clase_name):
-    if clase_name in dict_groups:
-        for value in dict_groups[clase_name]["pupils"]:
-            print(value)
+
+# funkcja zwracająca listę uczniów danej klasy (obiektowo)
+def print_pupils_obj(cl_name, dict_name):
+    if cl_name in dict_name:
+        count = 0
+        for value in dict_name[cl_name]["pupils"]:
+            count += 1
+            print("{:2}) {}".format(count, value))

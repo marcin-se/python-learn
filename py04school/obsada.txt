@@ -1,5 +1,6 @@
-﻿wychowawca
-Krzysztof Baczynski
+﻿
+wychowawca
+Krzysztof Baczyński
 1a
 1b
 2a
@@ -8,6 +9,12 @@ wychowawca
 Jan Brzechwa
 1c
 2b
+2c
+
+wychowawca
+Lech Kaczyński
+1d
+2d
 
 nauczyciel
 Jan Długosz

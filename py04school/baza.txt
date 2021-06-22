@@ -1,0 +1,16 @@
+1a
+{'pupils': ['Jan Brzechwa', 'Jan Długosz', 'Eliza Orzeszkowa'], 'teachers': {'jezyk polski': 'Jan Długosz', 'historia': 'Henryk Sienkiewicz'}, 'educator': 'Krzysztof Baczyński'}
+1b
+{'pupils': ['Aleksander Fredro', 'Witold Gombrowicz'], 'teachers': {'jezyk polski': 'Jan Długosz', 'historia': 'Henryk Sienkiewicz'}, 'educator': 'Krzysztof Baczyński'}
+2a
+{'pupils': ['Hanna Krall', 'Zygmunt Krasiński', 'Jan Andrzej Morsztyn'], 'teachers': {'matematyka': 'Maria Konopnicka', 'fizyka': 'Stanisław Lem', 'historia': 'Henryk Sienkiewicz'}, 'educator': 'Krzysztof Baczyński'}
+1c
+{'pupils': ['Zbigniew Herbert'], 'teachers': {'jezyk polski': 'Jan Długosz'}, 'educator': 'Jan Brzechwa'}
+2b
+{'pupils': ['Małgorzata Musierowicz', 'Cyprian Kamil Norwid'], 'teachers': {'matematyka': 'Maria Konopnicka', 'fizyka': 'Stanisław Lem', 'historia': 'Henryk Sienkiewicz'}, 'educator': 'Jan Brzechwa'}
+2c
+{'pupils': ['Bolesław Prus', 'Juliusz Słowacki', 'Julian Tuwim', 'Stanisław Wyspiański'], 'teachers': {'matematyka': 'Maria Konopnicka', 'fizyka': 'Stanisław Lem'}, 'educator': 'Jan Brzechwa'}
+1d
+{'pupils': [], 'teachers': {'historia': 'Henryk Sienkiewicz'}, 'educator': 'Lech Kaczyński'}
+2d
+{'pupils': [], 'teachers': {'fizyka': 'Stanisław Lem'}, 'educator': 'Lech Kaczyński'}
