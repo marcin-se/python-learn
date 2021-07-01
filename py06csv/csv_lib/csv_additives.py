@@ -1,11 +1,11 @@
 ### Biblioteka z funkcjami dodatkowymi ###
+import os
+import time
+from sys import stdout
 
 
 
 # CLEAR SCREEN
-import time
-
-
 def clear_screen():
     if os.name == 'posix':  # dla mac i linux
         _ = os.system('clear')
@@ -18,17 +18,16 @@ def clear_screen():
 # LINE OF SIGNS
 # ------------------------------------------------------------- #
 def dividing_line(stamp="-", repeat=55):
-    print("+" + stamp * repeat + "+")
-    return
+    print("+" + stamp * (repeat+1) + "+")
 
 
 
 # EFFECTIVE PRINT
 def effective_print(text):
     for i in range(len(text)):
-        print(f'{text[i]}', end='')
-        time.sleep(0.2)
-    return
+        stdout.write(f'{text[i]}')
+        time.sleep(0.07)
+    print('')
 
 
 
@@ -39,12 +38,15 @@ def title_line(text="none"):
     repeat = 55
     textline = str(text.upper())
     dividing_line("-", repeat)
-    lenght = round((repeat - 2 - len(text))/2)
+    lenght = round((repeat - 2 - len(text)+1)/2)
     print("|{} {} {}|".format("-"*lenght, textline, "-"*lenght))
     dividing_line("-", repeat)
-    return
+    return True
+
+
 
 # FORMAT - PRINT CSV FILES
 # ------------------------------------------------------------- #
-TPL_FORMAT_argv = "Rekord: {:3},\tKolumna: {:3},\tDane: {:5}"
-TPL_FORMAT_csv = "{:5}\t {:2}\t {:2}\t {:2}\t {:3}\t {:6}\t"
+TPL_FORMAT_argv = 'Wiersz: {:2d}, Kolumna: {:2d}, Wartość: {:5s}'
+TPL_FORMAT_csv = '{:3s} | {:10s} | {:7s} | {:7s} | {:9s} |'
+
