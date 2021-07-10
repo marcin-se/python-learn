@@ -1,6 +1,7 @@
 ### Biblioteka z funkcjami dodatkowymi ###
 import os
 import time
+from math import floor
 from sys import stdout
 
 
@@ -17,7 +18,7 @@ def clear_screen():
 
 # LINE OF SIGNS
 # ------------------------------------------------------------- #
-def dividing_line(stamp="-", repeat=55):
+def dividing_line(stamp="-", repeat=61):
     print("+" + stamp * (repeat+1) + "+")
 
 
@@ -35,11 +36,14 @@ def effective_print(text):
 # ---------------------- TITLE BANNER ------------------------- #
 # ------------------------------------------------------------- #
 def title_line(text="none"):
-    repeat = 55
+    repeat = 61
     textline = str(text.upper())
     dividing_line("-", repeat)
-    lenght = round((repeat - 2 - len(text)+1)/2)
-    print("|{} {} {}|".format("-"*lenght, textline, "-"*lenght))
+    lenght = floor((repeat - 1 - len(text)) / 2)
+    if not len(text) % 2:
+        print("|{} {} {}|".format("-"*lenght, textline, "-"*lenght))
+    else:
+        print("|{} {} {}|".format("-" * lenght, textline, "-" * (lenght+1)))
     dividing_line("-", repeat)
     return True
 

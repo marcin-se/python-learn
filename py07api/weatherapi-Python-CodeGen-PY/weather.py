@@ -17,6 +17,10 @@ zapytaj, czy ponowić, czy wyjść
 
 from datetime import datetime, timedelta
 from os.path import getmtime
+
+import setuptools.package_index
+from setuptools.launch import run
+
 from api_lib.api_extras import clear_screen, dividing_line, title_line
 from weatherapi.weatherapi_client import WeatherapiClient
 from subprocess import Popen
@@ -48,13 +52,15 @@ def install_requirements(file_name):
     '''funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
     file_name = os.path.abspath(file_name)
     if os.path.exists(file_name):
-        with open(file_name, 'r', newline='') as file:
-            args = ['c:\windows\system32\cmd.exe', 'pip', 'install']
-            read_file = file.readline().strip()
-            for line in read_file:
-                args.append(line)
-                Popen(args)
-    return False, sys.stderr.write('Błąd pliku!')
+        pass
+        # with open(file_name, 'r', newline='') as file:
+        #     args = ['pip', 'install']
+        #     read_file = file.readline().strip()
+        #     for line in read_file:
+        #         args.append(line)
+        #         Popen(args)
+        return sys.stdout.write('Wymagane biblioteki są zainstalowane.\n')
+    return [False, sys.stderr.write('Błąd pliku!')]
 
 
 def change_date_to_unix(date):
@@ -77,20 +83,20 @@ def collect_history(dict_name, date, forecast):
     return True
 
 
-def get_response_current(q):
+def get_current(q):
     resp = jsonpickle.encode(ap_is_controller.get_realtime_weather(q=q,
             lang='pl'))
     return resp
 
 
-def get_response_history(q, dt, enddt):
+def get_history(q, dt, enddt):
     '''get_history_weather(q, dt, *unixdt, *end_dt, *unixend_dt, *hour, *lang)'''
     resp = jsonpickle.encode(ap_is_controller.get_history_weather(q=q, dt=dt,
             unixdt=None, end_dt=enddt, unixend_dt=None, hour=None, lang='pl'))
     return resp
 
 
-def get_response_forecast(q, days, unixdt):
+def get_forecast(q, days, unixdt):
     '''get_forecast_weather(q, days, *dt, *unixdt, *hour, *lang)'''
     resp = jsonpickle.encode(ap_is_controller.get_forecast_weather(q=q, days=days,
             dt=None, unixdt=unixdt, hour=None, lang='pl'))
@@ -138,15 +144,14 @@ def read_file(file_name):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 key_file = 'APIKEY.txt'
-db_weather = 'db_weather.json'
-db_requests = 'db_requests.json'
-pipfreeze_file = r"C:\Users\mksse\PycharmProjects\py07api\
-            weatherapi-Python-CodeGen-PY\requirements.txt"
+db_weather = './db_weather.json'
+db_requests = './db_requests.json'
+pipfreeze_file = "./requirements.txt"
 date_today = datetime.now().strftime('%Y-%m-%d')
 date_tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
 date_month = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
-forecast_codes = [1063, 1066, 1069, 1072, 1087, 1150, 1153, 1168, 1171, 1183,
-            1186, 1189, 1192, 1195, 1198, 1201, 1204, 1207, 1243, 1246, 1273]
+forecast_codes = [1063,1066,1069,1072,1087,1150,1153,1168,1171,1183,1186,1189,
+                            1192,1195,1198,1201,1204,1207,1240,1243,1246,1273]
 
 # WEATHER PARAMETERS :
 url_current = 'https://api.weatherapi.com/v1/current.json'
@@ -155,12 +160,12 @@ url_history = 'https://api.weatherapi.com/v1/history.json'
 ''' print(requests.get(url).text) if requests.get(url) 
                                                 else print('Error requests')'''
 key = read_apikey(key_file)
-q = 'Katowice'
+q = 'Krakow, pl'
 lang = 'pl'
 dt = ''              # format: dt = yyyy-MM-dd
 unix_date = 0        # format: unixdt = 1490227200
 unix_end = 0         # format: unix_end = 1490227200
-days = 1             # liczba dni prognozy: 1...10
+days = 2             # liczba dni prognozy: 1...10
 country, city, local_date = '', '', ''
 forecast_code, forecast, temperature, forecast_my = 0, '', 0.0, 'Nie wiem ;/'
 response: dict = {}
@@ -169,7 +174,11 @@ requests_arch: dict = {}
 
 while True:
     clear_screen()
-    if len(sys.argv) == 3 and sys.argv[1] == 'apikey':
+    print()
+    if len(sys.argv) == 4 and sys.argv[1] == 'apikey':
+        date = sys.argv[2]
+        q = sys.argv[3]
+    elif len(sys.argv) == 3 and sys.argv[1] == 'apikey':
         date = sys.argv[2]
     elif len(sys.argv) == 2 and sys.argv[1] == 'apikey':
         date = date_tomorrow
@@ -197,38 +206,44 @@ while True:
     if date in weather_arch:
         forecast_my = 'Będzie padać' if weather_arch[sys.argv[2]] in \
                                         forecast_codes else 'Nie będzie padać'
-    else:
-        if unix_date == unix_today:
-            response = json.loads(get_response_current(q=q))
-        elif unix_date < unix_today:
-            response = json.loads(get_response_history(q=q,
-                                                        dt=date, enddt=None))
-        elif unix_date > unix_today:
-            response = json.loads(get_response_forecast(q=q, days=days,
-                                                            unixdt=unix_date))
+    if unix_date == unix_today:
+        response = json.loads(get_current(q=q))
+    elif unix_date < unix_today:
+        time_now = datetime.now().timestamp()
+        if time_now - unix_date > 604800:
+            date = change_unix_to_date(unix_today - 518400)
+        response = json.loads(get_history(q=q, dt=date, enddt=None))
+    elif unix_date > unix_today:
+        response = json.loads(get_forecast(q=q, days=days,
+                                                        unixdt=unix_date+43200))
     ''' sprawdzanie daty - data implikuje rodzaj zapytania o pogodę '''
 
-    response = json.loads(get_response_forecast(q=q, days=10, unixdt=unix_date))
-    save_file(db_weather, response)
-    print(response)
     country = response['location']['country']
     city = response['location']['name']
-    local_date = change_unix_to_date(response['location']['localtime_epoch'])
-    forecast_code = response['current']['condition']['code']
-    forecast = response['current']['condition']['text']
-    temperature = response['current']['temp_c']
+    if unix_date == unix_today:
+        local_date = change_unix_to_date(response['location']['localtime_epoch'])
+        forecast_code = response['current']['condition']['code']
+        forecast = (response['current']['condition']['text'])
+        temperature = response['current']['temp_c']
+    else:
+        local_date = response['forecast']['forecastday'][0]['date']
+        forecast_code = response['forecast']['forecastday'][0]['day']\
+                                                        ['condition']['code']
+        forecast = response['forecast']['forecastday'][0]['day']\
+                                                        ['condition']['text']
+        temperature = response['forecast']['forecastday'][0]['day']['avgtemp_c']
 
-    sys.stdout.write('Country: \t| {}\nCity: \t\t| {}\nLocal time: \t| {}\n'.
+    dividing_line()
+    sys.stdout.write('Kraj: \t\t| {}\nMiasto: \t| {}\nData: \t\t| {}\n'.
         format(country, city, local_date))
-    sys.stdout.write('Temperature: \t| {}`C\nForecast: \t| {}\n'
-        'Forecast code: \t| {}\n'.format(temperature, forecast, forecast_code))
+    sys.stdout.write('Temperatura: \t| {}`C\nPrognoza({}): | {}\n'.
+                     format(temperature, forecast_code, forecast))
 
-    for code in forecast_codes:
-        forecast_my = 'Będzie padać ;(' if forecast_code == code else \
-                                                        'Nie będzie padać ;)'
+    forecast_my = 'Będzie padać ;(' if forecast_code in forecast_codes \
+        else 'Nie będzie padać ;)'
 
-    title = '{}, {} >>> {}'.format(city, local_date, forecast_my)
-    title_line(title)
+    title_line('{} ({}) ---- {}'.format(city, local_date, forecast_my))
+    print('\n\n')
 
     collect_history(requests_arch, unix_date, forecast_my)
     ''' zapis "request" w słowniku ("YYYY-MM-DD": "Będzie padać") '''
