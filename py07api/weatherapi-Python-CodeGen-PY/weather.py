@@ -14,7 +14,7 @@ zapytaj, czy ponowić, czy wyjść
 # RAPID API:              >>> https://rapidapi.com/collection/top-weather-apis/
 # WEATHER API             >>> https://api.weatherapi.com/
 # JSON PARSER ONLINE      >>> https://json.parser.online.fr/
-
+import csv
 from datetime import datetime, timedelta
 from os.path import getmtime
 
@@ -36,6 +36,22 @@ import os
 '''EXAMPLE2>>>   python weather.py <<klucz_api>> <<YYYY-MM-DD>>             '''
 '''EXAMPLE2>>>   python weather.py 3456789345678 2021-06-30                 '''
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+
+class WeatherForecast:
+    def __init__(self, apikey):
+        self.name = None
+        self.apikey = apikey
+
+    def __str__(self):
+        date_ask = 10
+        return date_ask
+
+    def items(self):
+        for day in range(333):
+            date_ask = 12
+            yield (date_ask, forecast)
+
 
 
 def read_apikey(file_name):
@@ -77,10 +93,10 @@ def change_unix_to_date(unix_date):
     return date_ymd
 
 
-def collect_history(dict_name, date, forecast):
-    '''metoda zapisująca dane pogodowe w słowniku '''
-    dict_name[date] = forecast
-    return True
+# def collect_history(dict_name, date, forecast):
+#     '''metoda zapisująca dane pogodowe w słowniku '''
+#     dict_name[date] = forecast
+#     return True
 
 
 def get_current(q):
@@ -96,56 +112,66 @@ def get_history(q, dt, enddt):
     return resp
 
 
-def get_forecast(q, days, unixdt):
+def get_forecast(q, days, dt, unixdt):
     '''get_forecast_weather(q, days, *dt, *unixdt, *hour, *lang)'''
     resp = jsonpickle.encode(ap_is_controller.get_forecast_weather(q=q, days=days,
-            dt=None, unixdt=unixdt, hour=None, lang='pl'))
+            dt=dt, unixdt=unixdt, hour=None, lang='pl'))
     return resp
 
 
-def load_forecast(file_name, q, dt, unix_today):
+def load_forecast(file_name, q):
     time_file = getmtime(file_name)
     time_now = datetime.now().timestamp()
+    new_dict_h, new_dict_f = {}, {}
     if time_now - time_file < 86400:
-        with open(file_name, 'r', newline='', encoding='utf-8') as file:
-            dict_name = json.load(file)
+        new_dict = read_file_to_dict(file_name)
     else:
-        response_h = ap_is_controller.get_history_weather(q=q, dt=dt,
-            unixdt=None, end_dt=None, unixend_dt=unix_today, hour=None,
-                                                          lang='pl')
-        response_f = ap_is_controller.get_forecast_weather(q=q, days=10,
-            dt=None, unixdt=unix_today, hour=None, lang='pl')
-        dict_name = response_h | response_f
-    save_file(file_name, dict_name)
-    return dict_name
+        for dy in range(8):
+            dth = (datetime.today() - timedelta(days=dy)).strftime('%Y-%m-%d')
+            response_h = json.loads(get_history(q=q, dt=dth, enddt=None))
+            local_dat_h = response_h['forecast']['forecastday'][0]['date']
+            forec_codh = response_h['forecast']['forecastday'][0]['day']\
+                                                    ['condition']['code']
+            forec_h = 'Będzie padać!' if forec_codh in forecast_codes \
+                                                    else 'Nie będzie padać.'
+            new_dict_h[local_dat_h] = forec_h
+            dtf = (datetime.today() + timedelta(days=dy)).strftime('%Y-%m-%d')
+            response_f = json.loads(get_forecast(q=q, days=1, dt=dtf,
+                                                                unixdt=None))
+            local_dat_f = response_f['forecast']['forecastday'][0]['date']
+            forec_codf = response_f['forecast']['forecastday'][0]['day']\
+                                                        ['condition']['code']
+            forec_f = 'Będzie padać!' if forec_codf in forecast_codes \
+                                                    else 'Nie będzie padać.'
+            new_dict_f[local_dat_f] = forec_f
+        new_dict = {**new_dict_h, **new_dict_f}
+        save_dict_to_file(file_name, new_dict)
+    return new_dict
 
 
-def save_file(file_name, dict_name):
-    '''metoda zapisująca dobowe dane pogodowe do pliku (JSON)'''
-    if os.path.exists(file_name):
-        with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
-            json.dump(dict_name, file)
-        return True
-    return False, sys.stderr.write('Błąd pliku!')
-
-
-def read_file(file_name):
+def read_file_to_dict(file_name):
     '''funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
     if os.path.exists(file_name):
-        dict_name: dict = {}
         with open(file_name, 'r', newline='', encoding='utf-8') as file:
-            read_json = json.load(file)
-            for key, val in read_json.items():
-                dict_name[key] = val
-            return dict_name
+            working_dict = json.load(file)
+            return working_dict
     return False, sys.stderr.write('Błąd pliku!')
+
+
+def save_dict_to_file(file_name, dict_name):
+    '''metoda zapisująca dobowe dane pogodowe do pliku (JSON)'''
+    working_dict = read_file_to_dict(file_name)
+    new_dict = {**working_dict, **dict_name}
+    with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
+        json.dump(new_dict, file)
+    return True
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 key_file = 'APIKEY.txt'
 db_weather = './db_weather.json'
-db_requests = './db_requests.json'
+db_requests = 'db_requests.json'
 pipfreeze_file = "./requirements.txt"
 date_today = datetime.now().strftime('%Y-%m-%d')
 date_tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
@@ -160,14 +186,14 @@ url_history = 'https://api.weatherapi.com/v1/history.json'
 ''' print(requests.get(url).text) if requests.get(url) 
                                                 else print('Error requests')'''
 key = read_apikey(key_file)
-q = 'Krakow, pl'
+q = 'Katowice,pl'
 lang = 'pl'
 dt = ''              # format: dt = yyyy-MM-dd
 unix_date = 0        # format: unixdt = 1490227200
 unix_end = 0         # format: unix_end = 1490227200
 days = 2             # liczba dni prognozy: 1...10
 country, city, local_date = '', '', ''
-forecast_code, forecast, temperature, forecast_my = 0, '', 0.0, 'Nie wiem ;/'
+forecast_code, forecast, temperature, forecast_my = 0, '', 0.0, 'Nie wiem...'
 response: dict = {}
 weather_arch: dict = {}
 requests_arch: dict = {}
@@ -196,11 +222,10 @@ while True:
     unix_month = change_date_to_unix(date_month)
     ''' konwersja dat na unixtime '''
 
-    install_requirements(pipfreeze_file)
+    # install_requirements(pipfreeze_file)
     ''' instalacja pakietów z pliku: "requirements.txt" '''
 
-    weather_arch = load_forecast(file_name=db_weather, q=q, dt=date_month,
-                                 unix_today=unix_today)
+    weather_arch = load_forecast(file_name=db_weather, q=q)
     ''' aktualizacja pliku "db_weather.json" danymi z "weatherapi.com" '''
 
     if date in weather_arch:
@@ -214,7 +239,7 @@ while True:
             date = change_unix_to_date(unix_today - 518400)
         response = json.loads(get_history(q=q, dt=date, enddt=None))
     elif unix_date > unix_today:
-        response = json.loads(get_forecast(q=q, days=days,
+        response = json.loads(get_forecast(q=q, days=days, dt=None,
                                                         unixdt=unix_date+43200))
     ''' sprawdzanie daty - data implikuje rodzaj zapytania o pogodę '''
 
@@ -236,18 +261,18 @@ while True:
     dividing_line()
     sys.stdout.write('Kraj: \t\t| {}\nMiasto: \t| {}\nData: \t\t| {}\n'.
         format(country, city, local_date))
-    sys.stdout.write('Temperatura: \t| {}`C\nPrognoza({}): | {}\n'.
+    sys.stdout.write('Temperatura: \t| {}`C\nPrognoza({}): | {:44}\n'.
                      format(temperature, forecast_code, forecast))
 
-    forecast_my = 'Będzie padać ;(' if forecast_code in forecast_codes \
-        else 'Nie będzie padać ;)'
+    forecast_my = 'Będzie padać!' if forecast_code in forecast_codes \
+        else 'Nie będzie padać.'
 
     title_line('{} ({}) ---- {}'.format(city, local_date, forecast_my))
     print('\n\n')
 
-    collect_history(requests_arch, unix_date, forecast_my)
-    ''' zapis "request" w słowniku ("YYYY-MM-DD": "Będzie padać") '''
+    requests_arch = {date: forecast_my}
+    ''' zapis każdego "request" w słowniku '''
 
-    save_file(db_requests, requests_arch)
+    save_dict_to_file(db_requests, requests_arch)
     ''' zapis słownika z "requests" do pliku '''
     break
