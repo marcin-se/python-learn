@@ -61,7 +61,7 @@ class Weather:
             return True
 
 '''
-x = ap_is_controller.get_realtime_weather(q, lang)
-x = ap_is_controller.get_history_weather(q, dt, unixdt, end_dt, unixend_dt, hour, lang)
-x = ap_is_controller.get_forecast_weather(q, days, dt, unixdt, hour, lang)
+x = wfc.get_realtime_weather(q, lang)
+x = wfc.get_history_weather(q, dt, unixdt, end_dt, unixend_dt, hour, lang)
+x = wfc.get_forecast_weather(q, days, dt, unixdt, hour, lang)
 '''
