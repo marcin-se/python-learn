@@ -48,14 +48,17 @@ class WeatherForecast(object):
 
     def __getitem__(self, w_date):
         if w_date in self.requests_dict:
-            return self.requests_dict[w_date]
+            print('({} {})'.format(w_date, self.requests_dict[w_date]))
+            return True
         else:
-            return 'Nie wiem'
+            print('Nie wiem')
+            return False
 
     def items(self):
         answer = self.read_file_to_dict('db_requests.json')
         for i in range(len(list(answer))):
-            yield list(answer.items())[i]
+            # print(tuple(answer.items())[i])  # wyświetla tuple jedną pod drugą
+            yield tuple(answer.items())[i]
 
     def read_file_to_dict(self, file_name):
         '''funkcja pobierająca dane ze źródłowego pliku (JSON) '''

@@ -92,6 +92,7 @@ unix_end = 0         # format: unix_end = 1490227200
 days = 2             # liczba dni prognozy: 1...10
 country, city, local_date = '', '', ''
 forecast_code, forecast, temperature, forecast_my = 0, '', 0.0, 'Nie wiem...'
+print_list: list = []
 response: dict = {}
 weather_arch: dict = {}
 requests_arch: dict = {}
@@ -125,10 +126,10 @@ while True:
 
     sys.stdout.write('\nMetoda "wf[date]" działa następująco:\n')
     info = wf[date]
-    print(date, info)
     sys.stdout.write('\nMetoda "wf.items()" działa następująco:\n')
     for day, forc in wf.items():
-        print(day, forc)
+        print_list.append((day, forc))
+    print(print_list)    # wyświetla tuple jedna obok drugiej, w liście []
     ''' użycie metod, zgodnie z treścią zadania '''
 
     unix_date = change_date_to_unix(date)
