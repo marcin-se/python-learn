@@ -1,4 +1,4 @@
-# WEATHER v1.0                                     (R) Powered by WeatherAPI.com
+# WEATHER v1.4                                     (R) Powered by WeatherAPI.com
 # -*- coding: UTF-8 -*-                              https://www.weatherapi.com/
 # Skrypt z odczytu danych pogodowych z serwera API                             #
 '''
@@ -33,17 +33,16 @@ import os
 
 
 def read_apikey(file_name):
-    '''metoda pobierająca klucz API z pliku'''
+    ''' funkcja pobierająca klucz API z pliku '''
     if os.path.exists(file_name):
         with open(key_file) as file:
             for num in file:
                 return num.strip()
-    else:
-        sys.stderr.write('Błąd pliku!')
+    return sys.stderr.write('Błąd pliku!')
 
 
 def install_requirements(file_name):
-    '''funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
+    ''' funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
     file_name = os.path.abspath(file_name)
     if os.path.exists(file_name):
         pass
@@ -58,7 +57,7 @@ def install_requirements(file_name):
 
 
 def change_date_to_unix(date):
-    '''metoda zmieniająca zapis daty'''
+    ''' funkcja zmieniająca zapis daty '''
     unix_date = int(time.mktime(datetime.strptime(date, '%d-%m-%Y').
         timetuple())) if date[2] == '-' else int(time.mktime(
         datetime.strptime(date, '%Y-%m-%d').timetuple()))
@@ -66,18 +65,12 @@ def change_date_to_unix(date):
 
 
 def change_unix_to_date(unix_date):
-    '''metoda zmieniająca zapis daty'''
+    ''' funkcja zmieniająca zapis daty '''
     date_ymd = str((datetime.utcfromtimestamp(unix_date)).strftime('%Y-%m-%d'))
     return date_ymd
 
-
-# def collect_history(dict_name, date, forecast):
-#     '''metoda zapisująca dane pogodowe w słowniku '''
-#     dict_name[date] = forecast
-#     return True
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
+# PARAMETERS OF FILES & DATES :
 key_file = 'APIKEY.txt'
 db_weather = './db_weather.json'
 db_requests = 'db_requests.json'
@@ -86,13 +79,10 @@ date_today = datetime.now().strftime('%Y-%m-%d')
 date_tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
 date_month = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
 
-
 # WEATHER PARAMETERS :
 url_current = 'https://api.weatherapi.com/v1/current.json'
 url_forecast = 'https://api.weatherapi.com/v1/forecast.json'
 url_history = 'https://api.weatherapi.com/v1/history.json'
-''' print(requests.get(url).text) if requests.get(url) 
-                                                else print('Error requests')'''
 key = read_apikey(key_file)
 q = 'Katowice,pl'
 lang = 'pl'
@@ -105,8 +95,9 @@ forecast_code, forecast, temperature, forecast_my = 0, '', 0.0, 'Nie wiem...'
 response: dict = {}
 weather_arch: dict = {}
 requests_arch: dict = {}
-
-
+''' print(requests.get(url).text) if requests.get(url) 
+                                               else print('Error requests') '''
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 while True:
     clear_screen()
     print()
@@ -196,3 +187,4 @@ while True:
     ''' zapis "request" w słowniku a następnie zapis do pliku '''
 
     break
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
