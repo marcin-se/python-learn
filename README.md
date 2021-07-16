@@ -5,7 +5,7 @@
 
 2. Pomyślnie sklonowano repozytorium zdalne do kompa.
 
-3. W repozytorium jest osiem katalogów:
+3. W repozytorium jest dziewięć katalogów:
 
 	py00muzyka	- zawierający pierwszy mój program (tekst piosenki).
 	
@@ -21,4 +21,7 @@
 
 	py06csv		- zawierający program: 'reader.py' w oparciu o środowiska zewnętrzne i zewnętrzne moduły.
 
-	py07virtual	- zawierający program: 'weather.py' w oparciu o środowiska wirtualne i API.
+	py07api		- zawierający program: 'weather.py' w oparciu o środowiska wirtualne i API.
+
+	py08csv+	- zawierający program: 'reader.py' z obsługą plików csv, json i pickle.
+
