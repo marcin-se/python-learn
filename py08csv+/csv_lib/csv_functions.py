@@ -1,13 +1,80 @@
 ﻿'''Biblioteka z funkcjami zapisu i odczytu w plikach CSV | JSON | PICKLE |'''
-import os
-import sys
 import csv
 import json
+import os
 import pickle
-from csv_lib.csv_extras import TPL_FORMAT_csv, TPL_FORMAT_argv
+import sys
+
+from csv_lib.csv_ext import TPL_FORMAT_csv, TPL_FORMAT_argv
 
 
 # ---READ---READ---READ---READ---READ---READ---READ---READ---
+
+# def read_csv_to_list(working_list, file_name):
+#     '''funkcja pobierająca dane ze źródłowego pliku *.csv'''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'r', newline='', encoding='utf-8') as file:
+#             read_csv = csv.reader(file, delimiter=',')
+#             for line in read_csv:
+#                 working_list.append(line)
+#         return working_list
+#     return False, sys.stderr.write('Błąd pliku!')
+
+
+# def read_json_to_list(working_list, file_name):
+#     '''funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'r', newline='', encoding='utf-8') as file:
+#             read_json = json.load(file)
+#             for line in read_json:
+#                 working_list.append(line)
+#         return working_list
+#     return False, sys.stderr.write('Błąd pliku!')
+
+
+# def read_pickle_to_list(working_list, file_name):
+#     '''funkcja pobierająca dane ze źródłowego pliku csv 'JSON' '''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'rb', newline='', encoding='utf-8') as file:
+#             read_pickle = pickle.load(file)
+#             for line in read_pickle:
+#                 working_list.append(line)
+#         return working_list
+#     return False, sys.stderr.write('Błąd pliku!')
+
+# ------------------------
+
+# def save_list_to_csv(working_list, file_name):
+#     '''funkcja zapisująca dane z listy do pliku CSV'''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
+#             writer_csv = csv.writer(file)
+#             for line in working_list:
+#                 writer_csv.writerow(line)
+#         return True
+#     return False, sys.stderr.write('Błąd pliku!')
+
+
+# def save_data_to_json(file_name, data):
+#     '''funkcja zapisująca dane z listy do pliku CSV 'JSON' '''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
+#             json.dump(data, file)
+#         return True
+#     return False, sys.stderr.write('Błąd pliku!')
+
+
+# def save_data_to_pickle(file_name, data):
+#     '''funkcja zapisująca dane z listy do pliku CSV 'PICKLE' '''
+#     if os.path.exists(file_name):
+#         with open(file_name, 'wb') as file:
+#             pickle.dump(data, file)
+#         return True
+#     return False, sys.stderr.write('Błąd pliku!')
+
+
+
+# ------------------------
 
 def readfile_to_dict(file_name):
     '''funkcja zwraca słownik z odczytanymi z pliku 2 wierszami (key/val)'''
@@ -50,7 +117,7 @@ def read_csv_to_list(working_list, file_name):
     if os.path.exists(file_name):
         with open(file_name, 'r', newline='', encoding='utf-8') as file:
             read_csv = csv.reader(file, delimiter=',')
-            # working_list.encode("utf-8")
+            # jiff_list.encode("utf-8")
             for line in read_csv:
                 working_list.append(line)
         return working_list
@@ -199,24 +266,24 @@ def print_alldata_from_picklefile(file_name):
 # ---DIFFERENT---DIFFERENT---DIFFERENT---DIFFERENT---DIFFERENT---
 
 
-def get_line(file_name):
-    '''funkcja pobierająca jedną linię pliku'''
-    return '{}'.format(file_name.readline().strip())
+# def get_line(file_name):
+#     '''funkcja pobierająca jedną linię pliku'''
+#     return '{}'.format(file_name.readline().strip())
 
 
-def clean_csv_file(file_name):
-    '''funkcja oczyszczająca dane w pliku *.csv z białych znaków'''
-    clean_list: list = []
-    if os.path.exists(file_name):
-        with open(file_name, 'r', newline='') as file:
-            read_csv = csv.reader(file)
-            for line in read_csv:
-                for i in range(len(line)):
-                    line[i] = line[i].strip(' ')
-                clean_list.append(list(line))
-        save_list_to_csv(clean_list, file_name)
-        return True
-    return False, sys.stderr.write('Błąd pliku!')
+# def clean_csv_file(file_name):
+#     '''funkcja oczyszczająca dane w pliku *.csv z białych znaków'''
+#     clean_list: list = []
+#     if os.path.exists(file_name):
+#         with open(file_name, 'r', newline='') as file:
+#             read_csv = csv.reader(file)
+#             for line in read_csv:
+#                 for i in range(len(line)):
+#                     line[i] = line[i].strip(' ')
+#                 clean_list.append(list(line))
+#         save_list_to_csv(clean_list, file_name)
+#         return True
+#     return False, sys.stderr.write('Błąd pliku!')
 
 
 def change_data_from_argv(working_list, change_data):

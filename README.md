@@ -5,7 +5,7 @@
 
 2. Pomyślnie sklonowano repozytorium zdalne do kompa.
 
-3. W repozytorium jest dziewięć katalogów:
+3. W repozytorium jest dziesięć katalogów:
 
 	py00muzyka	- zawierający pierwszy mój program (tekst piosenki).
 	
@@ -25,3 +25,4 @@
 
 	py08csv+	- zawierający program: 'reader.py' z obsługą plików csv, json i pickle.
 
+	py08acc+	- zawierający program: 'accountant.py' z obsługą plików csv, json i pickle (na dekoratorach)
