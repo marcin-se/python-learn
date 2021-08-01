@@ -1,9 +1,31 @@
 ﻿# Biblioteka z funkcjami zapisu i odczytu w plikach CSV | JSON | PICKLE |
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 from csv_lib.csv_ext import *
 import csv
 import json
 import pickle
 import os
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+
+class NoFileException(Exception):
+    pass    # a
+
+
+class DirectoryWithoutFilesException(Exception):
+    pass    # b
+
+
+class OpenErrorExtentionException(Exception):
+    pass    # c
+
+
+class SaveErrorExtentionException(Exception):
+    pass    # d
+
+
+class IncorrectDataException(Exception):
+    pass    # e
 
 
 class ModifyFile:
@@ -12,7 +34,7 @@ class ModifyFile:
 
     def open_file(self, file_name):
         """ method of opening indicated file """
-        if os.path.exists(file_name):
+        if os.path.isfile(file_name):
             if os.path.splitext(file_name)[1] == ".csv":
                 self.read_csvfile(file_name)
             elif os.path.splitext(file_name)[1] == ".json":
@@ -20,9 +42,10 @@ class ModifyFile:
             elif os.path.splitext(file_name)[1] == ".pickle":
                 self.read_picklefile(file_name)
             else:
-                raise ErrorExtentionException()
-            return True, print(f'SRC-FILE: {file_name}\nData loaded correctly.')
-        raise FileExistErrorException()
+                raise OpenErrorExtentionException()
+            return True, print(f'SRC-FILE: "{file_name}"\nData loaded correctly.')
+        else:
+            raise NoFileException()
 
     def save_file(self, file_name):
         """ method of saving data to indicated file """
@@ -33,8 +56,9 @@ class ModifyFile:
         elif os.path.splitext(file_name)[1] == ".pickle":
             self.save_picklefile(file_name)
         else:
-            raise ErrorExtentionException()
-        return True, print(f'DST-FILE: {file_name}\nData saved correctly.')
+            raise SaveErrorExtentionException()
+        return True, print(f'DST-FILE: "{file_name}"\nData saved correctly.')
+
 
     def read_csvfile(self, file_name):
         """ method of reading data from CSV """
@@ -116,6 +140,13 @@ class ModifyFile:
         return True
 
     @staticmethod
+    def listing_files(list_of_files):
+        """ method of listing files from current directory """
+        for num, name in enumerate(list_of_files):
+            print('{:2s}| {}'.format(str(num+1), name))
+        return True
+
+    @staticmethod
     def print_argvchanges(change_data):
         """ method of printing changes """
         change_list = list(change_data.split(","))
@@ -124,15 +155,3 @@ class ModifyFile:
                     int(change_list[1]),
                     str(change_list[2])))
         return True
-
-
-class ErrorExtentionException(Exception):
-    pass # print('Error: Wrong file extension!')
-
-
-class FileExistErrorException(Exception):
-    pass # print('Error: Wrong path or file does not exist!')
-
-
-class IncorrectDataException(Exception):
-    pass # print("Error: Incorrect data references!")
