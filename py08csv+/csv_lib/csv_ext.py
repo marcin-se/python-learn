@@ -37,7 +37,7 @@ def title_line(text="none"):
 
 # FORMAT - PRINT CSV FILES
 # ------------------------------------------------------------- #
-TPL_FORMAT_argv = 'Wiersz: {:2d}, Kolumna: {:2d}, Wartość: {:5s}'
+TPL_FORMAT_argv = 'Wiersz: {:1d},  Kolumna: {:1d},  Wartość: {:3s}\n'
 TPL_FORMAT_csv = '{:3s} | {:10s} | {:7s} | {:7s} | {:9s} |'
 
 

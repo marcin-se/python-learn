@@ -1,9 +1,8 @@
 ﻿# Biblioteka z funkcjami zapisu i odczytu w plikach CSV | JSON | PICKLE |
-from csv_lib.csv_ext import TPL_FORMAT_csv, TPL_FORMAT_argv
-import pickle
-import json
+from csv_lib.csv_ext import *
 import csv
-import sys
+import json
+import pickle
 import os
 
 
@@ -11,132 +10,129 @@ class ModifyFile:
     def __init__(self):
         self.jiff_list = []
 
-    def clean_csvfile(self, file_name):
-        '''funkcja oczyszczająca dane w pliku *.csv z białych znaków'''
-        clean_list: list = []
+    def open_file(self, file_name):
+        """ method of opening indicated file """
         if os.path.exists(file_name):
-            with open(file_name, 'r', newline='') as file:
-                read_csv = csv.reader(file)
-                for line in read_csv:
-                    for i in range(len(line)):
-                        line[i] = line[i].strip(' ')
-                    clean_list.append(list(line))
+            if os.path.splitext(file_name)[1] == ".csv":
+                self.read_csvfile(file_name)
+            elif os.path.splitext(file_name)[1] == ".json":
+                self.read_jsonfile(file_name)
+            elif os.path.splitext(file_name)[1] == ".pickle":
+                self.read_picklefile(file_name)
+            else:
+                raise ErrorExtentionException()
+            return True, print(f'SRC-FILE: {file_name}\nData loaded correctly.')
+        raise FileExistErrorException()
+
+    def save_file(self, file_name):
+        """ method of saving data to indicated file """
+        if os.path.splitext(file_name)[1] == ".csv":
             self.save_csvfile(file_name)
-            return True
-        return False, sys.stderr.write('Błąd rozszerzenia!')
+        elif os.path.splitext(file_name)[1] == ".json":
+            self.save_jsonfile(file_name)
+        elif os.path.splitext(file_name)[1] == ".pickle":
+            self.save_picklefile(file_name)
+        else:
+            raise ErrorExtentionException()
+        return True, print(f'DST-FILE: {file_name}\nData saved correctly.')
 
     def read_csvfile(self, file_name):
-        '''metoda pobierająca dane ze źródłowego pliku *.csv'''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".csv":
-                with open(file_name, 'r', newline='', encoding='utf-8') as file:
-                    reader_csv = csv.reader(file)
-                    for line in reader_csv:
-                        self.jiff_list.append(line)
-                return self.jiff_list
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
-
-    def save_csvfile(self, file_name):
-        '''metoda zapisująca dane do docelowego pliku *.csv'''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".csv":
-                with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
-                    writer_csv = csv.writer(file)
-                    for line in self.jiff_list:
-                        writer_csv.writerow(line)
-                return True
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
+        """ method of reading data from CSV """
+        with open(file_name, 'r', newline='', encoding='utf-8') as file:
+            reader_csv = self.clean_csvdata(csv.reader(file))
+            for line in reader_csv:
+                if not line:
+                    break
+                else:
+                    self.jiff_list.append(line)
+        return True
 
     def read_jsonfile(self, file_name):
-        '''funkcja pobierająca dane ze źródłowego pliku *.json '''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".json":
-                with open(file_name, 'r', newline='', encoding='utf-8') as file:
-                    reader_json = json.load(file)
-                    for line in reader_json:
-                        self.jiff_list.append(line)
-                return self.jiff_list
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
-
-    def save_jsonfile(self, file_name):
-        '''funkcja zapisująca dane z listy do pliku *.json '''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".json":
-                with open(file_name, 'w', newline='\n', encoding='utf-8') as file:
-                    json.dump(self.jiff_list, file)
-                return True
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
+        """ method of reading data from JSON """
+        with open(file_name, 'r', newline='', encoding='utf-8') as file:
+            reader_json = self.clean_csvdata(json.load(file))
+            for line in reader_json:
+                if not line:
+                    break
+                else:
+                    self.jiff_list.append(line)
+        return True
 
     def read_picklefile(self, file_name):
-        '''funkcja pobierająca dane ze źródłowego pliku *.pickle '''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".pickle":
-                with open(file_name, 'rb', newline='', encoding='utf-8') as file:
-                    reader_pickle = pickle.load(file)
-                    for line in reader_pickle:
-                        self.jiff_list.append(line)
-                return self.jiff_list
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
+        """ method of reading data from PICKLE """
+        with open(file_name, 'rb') as file:
+            reader_pickle = self.clean_csvdata(pickle.load(file))
+            for line in reader_pickle:
+                if not line:
+                    break
+                else:
+                    self.jiff_list.append(line)
+        return True
+
+    def save_csvfile(self, file_name):
+        """ method of saving data to CSV """
+        with open(file_name, "w", newline="") as file:
+            writer_csv = csv.writer(file)
+            for line in self.jiff_list:
+                writer_csv.writerow(line)
+        return True
+
+    def save_jsonfile(self, file_name):
+        """ method of saving data to JSON """
+        with open(file_name, "w", newline="") as file:
+            json.dump(self.jiff_list, file)
+        return True
 
     def save_picklefile(self, file_name):
-        '''funkcja zapisująca dane z listy do pliku CSV 'PICKLE' '''
-        if os.path.exists(file_name):
-            if os.path.splitext(file_name)[1] == ".pickle":
-                with open(file_name, 'wb') as file:
-                    pickle.dump(self.jiff_list, file)
-                return True
-            return False, sys.stderr.write('Błąd rozszerzenia!')
-        return False, sys.stderr.write('Błąd pliku!')
-    ''' Odczyt i zapis - obsługa plików CSV, JSON, PICKLE '''
+        """ method of saving data to PICKLE """
+        with open(file_name, 'wb') as file:
+            pickle.dump(self.jiff_list, file)
+        return True
 
-    def print_csvdata(self, file_name):
-        '''metoda wyświetlająca wszystkie dane z pliku *.csv'''
-        if os.path.exists(file_name):
-            with open(file_name) as file:
-                reader_csv = csv.reader(file)
-                for line in reader_csv:
-                    if line == 0:
-                        print("{:20}".format("\t ".join(line)))
-                    else:
-                        print(TPL_FORMAT_csv.format(line[0], line[1],
-                            line[2], line[3], line[4], line[4]))
-                print(TPL_FORMAT_csv.format(
-                    int(change_list[0])-1, int(change_list[1])-1, str(change_list[2])))
+    def clean_csvdata(self, csvdata):
+        """ method of cleaning data in CSV """
+        # reader_csv = csv.reader(csvdata)
+        clean_list: list = []
+        for line in csvdata:
+            for i in range(len(line)):
+                line[i] = line[i].strip(' ')
+            clean_list.append(list(line))
+        return clean_list
 
-    def print_file(self, file_name):
-        '''metoda wyświetlająca zawartość dowolnego pliku '''
-        if os.path.exists(file_name):
-            with open(file_name) as file:
-                reader = file.read()
-                for line in reader:
-                    if not line:
-                        break
-                    else:
-                        print(line)
-        return False, sys.stderr.write('Błąd pliku!')
+    def change_csvdata(self, change_data):
+        """ method of changing data in file """
+        change_list = list(change_data.split(","))
+        if change_list[0] and change_list[1]:
+            self.jiff_list[int(change_list[0])][int(change_list[1]) - 1]\
+                    = str(change_list[2])
+        else:
+            raise IncorrectDataException()
+        return True
+
+    def print_data(self):
+        """ method of printing data from file """
+        for line in self.jiff_list:
+            print('{:20}'.format("\t ".join(line)))
+        return True
 
     @staticmethod
     def print_argvchanges(change_data):
-        '''metoda wyświetlająca zmiany pobrane z argv[] w pliku *.csv'''
-        change_list: list = []
-        for change in change_data:
-            change_list = change.split(",")
-        print(TPL_FORMAT_argv.format(int(change_list[0])-1,
-                                     int(change_list[1])-1,
-                                     str(change_list[2])))
+        """ method of printing changes """
+        change_list = list(change_data.split(","))
+        print(TPL_FORMAT_argv.format(
+                    int(change_list[0]),
+                    int(change_list[1]),
+                    str(change_list[2])))
+        return True
 
-    def change_argvchanges(self, change_data):
-        '''metoda zmieniająca dane pobrane z argv[] w pliku *.csv'''
-        for change in change_data:
-            change_list = change.split(",")
-            if change_list[0] and change_list[1]:
-                self.jiff_list[int(change_list[0]) - 1]\
-                              [int(change_list[1]) - 1]\
-                              = int(change_list[2])
-                return self.jiff_list
-            return False, sys.stderr.write('Błąd argumentów!')
+
+class ErrorExtentionException(Exception):
+    pass # print('Error: Wrong file extension!')
+
+
+class FileExistErrorException(Exception):
+    pass # print('Error: Wrong path or file does not exist!')
+
+
+class IncorrectDataException(Exception):
+    pass # print("Error: Incorrect data references!")
