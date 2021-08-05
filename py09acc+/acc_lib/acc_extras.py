@@ -3,12 +3,11 @@
 # Biblioteka z funkcjami dodatkowymi ###
 import os
 import time
-from sys import stdout
+from math import ceil
 
 
-
-# CLEAR SCREEN
-def cls():
+# * * * * * * * * *  C L E A R  S C R E E N  * * * * * * * * #
+def clearscreen():
     if os.name == 'posix':  # dla mac i linux
         _ = os.system('clear')
     else:
@@ -16,39 +15,41 @@ def cls():
     return
 
 
-
-# LINE OF SIGNS
-# ------------------------------------------------------------- #
-def dividing_line(stamp="-", repeat=55):
-    print("+" + stamp * (repeat+1) + "+")
+# * * * * * * * * *  L I N E   O F   S I G N S  * * * * * * * * #
+def line_division(stamp="-", width=60):
+    return stamp * width
 
 
+# * * * * * *  H I G H L I G H T E D  L I N E  * * * * * * * * #
+def line_hilight(text='', width=60):
+    ''' Pojedyncza linia znaków z tekstem (upper) '''
+    mytext = text.upper().strip()
+    mywidth = ceil((width - len(mytext) - 2) / 4)
+    print(f"{'* ' * mywidth} {mytext} {' *' * int(mywidth)}")
 
-# EFFECTIVE PRINT
-def effective_print(text):
+
+# +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''+
+# |             T I T L E   B A N N E R   L I N E              |
+# +............................................................+
+def line_banner(text='', width=60):  # width = 30, 40, 50, 60,...
+    ''' Potrójny baner myślników z tekstem (upper) w środku '''
+    mytext = text.upper().strip()
+    mywidth = ceil((width - len(mytext) - 3) / 2)
+    width += 1 if (width-len(mytext)-2) % 2 == 0 else width
+    print('+{}+'.format(line_division("'", width)))
+    print(f"|{' ' * mywidth} {mytext} {' ' * int(mywidth+1)}|")
+    print('+{}+'.format(line_division('.', width)))
+
+
+# - - - - - - -  E F F E C T I V E   P R I N T  - - - - - - - - #
+def effective_print(text='', delay=0.1):
+    ''' Zwraca ciąg znaków po jednym znaku z opóźnieniem '''
     for i in range(len(text)):
-        stdout.write(f'{text[i]}')
-        time.sleep(0.07)
-    print('')
+        time.sleep(delay)
+        yield f'{text[i]}'
 
 
-
-# ------------------------------------------------------------- #
-# ---------------------- TITLE BANNER ------------------------- #
-# ------------------------------------------------------------- #
-def title_line(text="none"):
-    repeat = 55
-    textline = str(text.upper())
-    dividing_line("-", repeat)
-    lenght = round((repeat - 2 - len(text)+1)/2)
-    print("|{} {} {}|".format("-"*lenght, textline, "-"*lenght))
-    dividing_line("-", repeat)
-    return True
-
-
-
-# FORMAT - PRINT CSV FILES
-# ------------------------------------------------------------- #
+# - - - - - - - -  F O R M A T - P R I N T E R - - - - - - - - - #
 TPL_FORMAT_argv = 'Wiersz: {:2d}, Kolumna: {:2d}, Wartość: {:5s}'
 TPL_FORMAT_csv = '{:3s} | {:10s} | {:7s} | {:7s} | {:9s} |'
 

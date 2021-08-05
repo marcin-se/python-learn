@@ -1,132 +1,184 @@
-# ACCOUNTANT v2.0_on_classes
+# ACCOUNTANT v2.0 on_classes
 # -*- coding: UTF-8 -*-
-# Biblioteka z klasami i funkcjami księgowości rachunkowo-magazynowej
-from sys import stdout
+# "accountant" obiektowo, wyłącznie z obsługą plików we/wy
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
 
-class Accountant:
-    ''' klasa obsługująca księgowość rachunkowo-magazynową '''
-    def __init__(self):
-        self.log_list = self.log_list.append(['None', 0, 0, 0])
-        self.stock_status = {}
-        self.account_balance = 0
+class NotEnoughMoneyException(Exception):
+    ''' niewystarczające środki na koncie '''
+    pass
 
-    def change_budget(self, value, comment):
-        ''' metoda zmieniająca stan konta finansowego '''
-        self.account_balance += value
-        self.log_list.append(['saldo', value, comment])
-        stdout.write('===== Zmieniono wartość środków na koncie. =====')
-        return 1
 
-    def change_buy(self, product_name, price, quantity):
-        ''' metoda obsługująca proces zakupów '''
-        if price <= 0 or quantity <= 0:
-            print('===== Nieprawidłowa cena lub ilość! =====')
-            return 0
-        elif self.account_balance <= price * quantity:
-            print('===== Zakup niemożliwy! Brak środków! =====')
-            return 0
+class NotEnoughDataException(Exception):
+    ''' niewystarczająca ilość danych '''
+    pass
+
+
+class NotEnoughStockException(Exception):
+    ''' niewystarczająca ilość asortymentu '''
+    pass
+
+
+class NoAssortmentException(Exception):
+    ''' brak asortymentu w magazynie '''
+    pass
+
+
+class NoActionException(Exception):
+    ''' niezgodna liczba parametrów '''
+    pass
+
+
+class OutOfRangeException(Exception):
+    ''' przekroczono dostępny zakres wywołania '''
+    pass
+
+
+class FileReadErrorException(Exception):
+    ''' błąd odczytu pliku '''
+    pass
+
+
+class FileSaveErrorException(Exception):
+    ''' błąd zapisu do pliku '''
+    pass
+
+
+class Reader:
+    ''' klasa - odczyt danych z pliku '''
+
+    def __init__(self, filepath):
+        self.path = filepath
+        self.file = open(filepath)
+
+    def get_line(self, count=1):
+        ''' metoda pobiera dane z pliku, zwraca listę '''
+        countlist = []
+        for i in range(count):
+            fileline = self.file.readline()
+            if not fileline:
+                raise NotEnoughDataException('No data to read!')
+            countlist.append(fileline.strip())
+        return countlist
+
+    def put_line(self, actions):
+        ''' metoda dopisuje jedną linię do pliku '''
+        self.open_file_read()
+        filelines = self.file.readlines()
+        if not filelines:
+            raise NotEnoughDataException('No data to read!')
+        filelines.insert(-1, (str(actions) + "\n"))
+        joinlines = "".join(filelines)
+        self.open_file_write()
+        self.file.write(joinlines)
+        self.file.close()
+
+    def export_data(self, exp_data):
+        ''' metoda zapisuje dane w pliku '''
+        self.open_file_write()
+        for line in exp_data:
+            for pos in line:
+                self.file.write("".join(pos) + "\n")
+        self.file.write('stop\n')
+        self.file.close()
+
+    def open_file_read(self):
+        self.file.close()
+        self.file = open(self.path, mode='r', encoding='utf-8')
+
+    def open_file_write(self):
+        self.file.close()
+        self.file = open(self.path, mode='w', encoding='utf-8')
+
+
+class Manager:
+    ''' główna klasa ogsługi magazynowo-księgowej '''
+
+    def __init__(self, reader):
+        self.reader = reader
+        self.history = []
+        self.account = 0
+        self.stock = {}
+        self.actions = {}  # {"akcja": (param, callback)}
+
+    def process(self):
+        ''' metoda sprawdza akcję, pobiera parametry, zwraca callback '''
+        while True:
+            my_action = self.reader.get_line()[0]
+            if my_action == "stop":
+                break
+            if my_action not in self.actions:
+                raise NoActionException('Mismatch action parameters!\n'
+                                     f'Procedure "{my_action}" not performed.')
+            param, callback = self.actions[my_action]
+            rows = self.reader.get_line(param)
+            callback(self, rows)
+        return True
+
+    def post_process(self, my_action, rows):
+        ''' metoda dodaje akcję do słownika, uzupełnia historię '''
+        parameters, callback = self.actions[my_action]
+        if len(rows) != parameters:
+            raise NoActionException('Mismatch action parameters!\n'
+                                    'Procedure not performed.')
+        if callback(self, rows):
+            self.add_history([my_action] + rows)
+        return True
+
+    def action(self, my_action, params):
+        ''' metoda modyfikuje słownik i zwraca funkcję '''
+        def action_in(callback):
+            self.actions[my_action] = (params, callback)
+        return action_in
+
+    def add_history(self, position):
+        ''' metoda dodaje akcję do historii '''
+        self.history.append(position)
+        return True
+
+    def view_history(self, start, stop):
+        ''' metoda wyświetla wybrane wiersze z historii '''
+        if start <= stop and stop <= len(self.history) - 1:
+            for row in self.history[int(start): int(stop)]:
+                print('(ArchID.{}) {}'.format(row, self.history[row]))
         else:
-            self.account_balance -= price * quantity
-            self.stock_status[product_name] += quantity
-            self.log_list.append(['zakup', product_name, price, quantity])
-            print('===== Zakup zakończony pomyślnie. =====')
-        return 1
+            raise OutOfRangeException('Position range exceeded.\n'
+                                      'The last position: {}.'.format(
+                                      len(self.history) - 1))
+        return True
 
-    def change_sale(self, product_name, price, quantity):
-        ''' metoda obsługująca proces sprzedaży '''
-        if product_name not in self.stock_status:
-            print('* {}: brak produktu w magazynie!'.format(product_name))
-            return 0
-        elif self.stock_status[product_name] <= quantity:
-            print('* {}: zbyt mały asortyment!'.format(product_name))
-            return 0
+    def modify_account(self, value):
+        ''' metoda modyfikuje stan konta '''
+        if self.account + value < 0:
+            raise NotEnoughMoneyException('Insufficient financial resources!\n'
+                                          f'Current status: {self.account}')
+        self.account += value
+        return True
+
+    def modify_stock(self, item, qty):
+        ''' metoda modyfikuje stany magazynowe '''
+        if item not in self.stock:
+            raise NoAssortmentException(f'No assortment in stock. ({item})')
+        if self.stock[item] + qty < 0:
+            raise NotEnoughStockException('Insufficient quantity in stock!')
         else:
-            self.account_balance += price * quantity
-            self.stock_status[product_name] -= quantity
-            if not self.stock_status[product_name]:
-                print('* {}: produkt wyprzedany!'.format(product_name))
-            self.log_list.append(['sprzedaż', product_name, price, quantity])
-            print('===== Sprzedaż zakończona pomyślnie. =====')
-            return 1
+            self.stock[item] += qty
+        return True
 
-    def about_account(self):
-        ''' metoda zwracająca info o stanie konta finansowego '''
-        print('===== Stan konta: {} ====='.format(self.account_balance))
-        return self.account_balance
+    def view_stock(self, items):
+        ''' metoda wyświetla stany magazynowe wybranego asortymentu '''
+        for item in items:
+            if item not in self.stock:
+                raise NoAssortmentException(f'No assortment in stock. ({item})')
+        for item, qty in self.stock.items():
+            print("* {}: {}".format(item, qty))
+        return True
 
-    def about_stock(self, product_name):
-        ''' metoda zwracająca info o stanach magazynowych '''
-        if product_name in self.stock_status:
-            print('* {}: {} szt'.format(
-                product_name, self.stock_status[product_name]))
-            return 1
-        else:
-            print('* {}: brak asortymentu w magazynie!'.format(
-                product_name))
-            return 0
+    def export_to_file(self):
+        ''' metoda eksportuje historię do archiwizacji '''
+        self.reader.export_data(self.history)
+        return True
 
-    def about_logs(self, start_range, stop_range):
-        ''' metoda zwracająca info o dotychczasowych transakcjach '''
-        if start_range <= stop_range:
-            if stop_range <= len(self.log_list) - 1:
-                for oper in range(start_range, stop_range):
-                    stdout.write('Archiwum(ID.{}) {}\n'.format(
-                        oper, self.log_list[oper]))
-                    return 1
-            else:
-                print('===== Wartości poza zakresem! =====')
-                print('(( Ostatni indeks operacji to {}. ))'.format(
-                    len(self.log_list) - 1))
-        else:
-            print('===== Odwrócone wartości zakresu! =====')
-        return 0
-
-    def write_to_file(self, file_name, command_list):
-        ''' metoda zapisująca 'otwarte' dane do pliku '''
-        with open(file_name, 'r+', encoding='utf-8') as file:
-            new_file = file.readlines()
-            file.seek(0)
-            for line in new_file:
-                if line != 'stop\n':
-                    file.write(line)
-            file.truncate()
-            for idx in command_list:
-                file.write("{}\n".format(idx))
-            file.write('stop\n')
-        return 1
-
-    def get_line(self, file_name):
-        '''funkcja pobierająca jedną linię pliku'''
-        return '{}'.format(file_name.readline().strip())
-
-    def read_from_file_to_list(self, file_name):
-        '''funkcja pobierająca 'otwarte' dane z pliku'''
-        with open(file_name, 'r', encoding="utf-8") as file:
-            command_list: list = []
-            file.seek(0)
-            while True:
-                get_data = self.get_line(file)
-
-                if not get_data or get_data == 'stop':
-                    break
-
-                if get_data == 'saldo':
-                    value = int(self.get_line(file))
-                    comment = str(self.get_line(file))
-                    command_list.append(['saldo', value, comment])
-
-                if get_data == 'sprzedaż':
-                    product_name = str(self.get_line(file))
-                    price = int(self.get_line(file))
-                    quantity = int(self.get_line(file))
-                    command_list.append(['sprzedaż',
-                                         product_name, price, quantity])
-
-                if get_data == 'zakup':
-                    product_name = str(self.get_line(file))
-                    price = int(self.get_line(file))
-                    quantity = int(self.get_line(file))
-                    command_list.append(['zakup',
-                                         product_name, price, quantity])
-        return command_list
+    def close_actions(self):
+        ''' metoda kończy pracę programu '''
+        # sys.exit('-= ZAKOŃCZENIE PROGRAMU =-')
