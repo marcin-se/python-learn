@@ -78,7 +78,7 @@ class Reader:
         self.open_file_write()
         for line in exp_data:
             for pos in line:
-                self.file.write("".join(pos) + "\n")
+                self.file.write("\n".join(pos) + "\n")
         self.file.write('stop\n')
         self.file.close()
 
@@ -101,6 +101,12 @@ class Manager:
         self.stock = {}
         self.actions = {}  # {"akcja": (param, callback)}
 
+    def action(self, my_action, params):
+        ''' metoda modyfikuje słownik i zwraca funkcję '''
+        def action_in(callback):
+            self.actions[my_action] = (params, callback)
+        return action_in
+
     def process(self):
         ''' metoda sprawdza akcję, pobiera parametry, zwraca callback '''
         while True:
@@ -109,7 +115,7 @@ class Manager:
                 break
             if my_action not in self.actions:
                 raise NoActionException('Mismatch action parameters!\n'
-                                     f'Procedure "{my_action}" not performed.')
+                                        'Procedure not performed.')
             param, callback = self.actions[my_action]
             rows = self.reader.get_line(param)
             callback(self, rows)
@@ -125,12 +131,6 @@ class Manager:
             self.add_history([my_action] + rows)
         return True
 
-    def action(self, my_action, params):
-        ''' metoda modyfikuje słownik i zwraca funkcję '''
-        def action_in(callback):
-            self.actions[my_action] = (params, callback)
-        return action_in
-
     def add_history(self, position):
         ''' metoda dodaje akcję do historii '''
         self.history.append(position)
@@ -138,9 +138,10 @@ class Manager:
 
     def view_history(self, start, stop):
         ''' metoda wyświetla wybrane wiersze z historii '''
-        if start <= stop and stop <= len(self.history) - 1:
-            for row in self.history[int(start): int(stop)]:
-                print('(ArchID.{}) {}'.format(row, self.history[row]))
+        if start <= stop:
+            if stop <= len(self.history) - 1:
+                for row in self.history[int(start): int(stop)]:
+                    print('(ArchID.{}) {}'.format(row, self.history[row]))
         else:
             raise OutOfRangeException('Position range exceeded.\n'
                                       'The last position: {}.'.format(
@@ -150,15 +151,14 @@ class Manager:
     def modify_account(self, value):
         ''' metoda modyfikuje stan konta '''
         if self.account + value < 0:
-            raise NotEnoughMoneyException('Insufficient financial resources!\n'
-                                          f'Current status: {self.account}')
+            raise NotEnoughMoneyException('Insufficient financial resources!')
         self.account += value
         return True
 
     def modify_stock(self, item, qty):
         ''' metoda modyfikuje stany magazynowe '''
         if item not in self.stock:
-            raise NoAssortmentException(f'No assortment in stock. ({item})')
+            self.stock[item] = 0
         if self.stock[item] + qty < 0:
             raise NotEnoughStockException('Insufficient quantity in stock!')
         else:
@@ -169,7 +169,7 @@ class Manager:
         ''' metoda wyświetla stany magazynowe wybranego asortymentu '''
         for item in items:
             if item not in self.stock:
-                raise NoAssortmentException(f'No assortment in stock. ({item})')
+                raise NoAssortmentException(f'No assortment in stock.')
         for item, qty in self.stock.items():
             print("* {}: {}".format(item, qty))
         return True

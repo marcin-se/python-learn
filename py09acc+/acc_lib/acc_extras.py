@@ -36,9 +36,11 @@ def line_banner(text='', width=60):  # width = 30, 40, 50, 60,...
     mytext = text.upper().strip()
     mywidth = ceil((width - len(mytext) - 3) / 2)
     width += 1 if (width-len(mytext)-2) % 2 == 0 else width
-    print('+{}+'.format(line_division("'", width)))
+    line = line_division("'", 60)
+    print(f'+{line}+')
     print(f"|{' ' * mywidth} {mytext} {' ' * int(mywidth+1)}|")
-    print('+{}+'.format(line_division('.', width)))
+    line = line_division(",", 60)
+    print(f'+{line}+')
 
 
 # - - - - - - -  E F F E C T I V E   P R I N T  - - - - - - - - #

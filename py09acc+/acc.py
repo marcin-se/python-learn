@@ -8,7 +8,7 @@
 - niedozwolone są żadne zmienne globalne
 - dane przechowywane wewnątrz obiektu "Manager"
 '''
-from acc_lib.acc_class import *
+from acc_lib.acc_class import Reader, Manager
 import sys
 # - - - - - - - E X A M P L E S - - - - - - - - E X A M P L E S - - - - - - - -#
 '''EXAMPLE1>>>  saldo.py    export.txt  123000  pożyczka                     '''
@@ -19,39 +19,42 @@ import sys
 '''EXAMPLE6>>>  przeglad.py export.txt  8  9                                 '''
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
-
 db_path = sys.argv[1]
-actions = sys.argv[2:]
-
+actions = sys.argv[1:]
 
 reader = Reader(db_path)
-manager = Manager(reader)
+director = Manager(reader)
 
-@manager.action("saldo", 2)
-def saldo(manager, rows):
+
+@director.action("saldo", 2)
+def saldo(director, rows):
     price = float(rows[0])
-    manager.modify_account(price)
+    director.modify_account(price)
 
-@manager.action("zakup", 3)
-def zakup(manager, rows):
+
+@director.action("zakup", 3)
+def zakup(director, rows):
     name_item = rows[0]
     price = float(rows[1])
     qty = float(rows[2])
-    manager.modify_account(-price*qty)
-    manager.modify_stock(name_item, qty)
+    director.modify_account(-price * qty)
+    director.modify_stock(name_item, qty)
 
-@manager.action('sprzedaż', 3)
-def sprzedaz(manager, rows):
+
+@director.action('sprzedaż', 3)
+def sprzedaz(director, rows):
     name_item = rows[0]
     price_item = float(rows[1])
     qty = float(rows[2])
-    manager.modify_stock(name_item, -qty)
-    manager.modify_account(price_item * qty)
+    director.modify_stock(name_item, -qty)
+    director.modify_account(price_item * qty)
 
-@manager.action("przegląd", 2)
-def przeglad(manager, rows):
-    manager.view_history(rows[0], rows[1])
 
-@manager.action("magazyn", 3)
-def magazyn(manager, rows):
-    manager.view_stock(rows)
+@director.action("przegląd", 2)
+def przeglad(director, rows):
+    director.view_history(rows[0], rows[1])
+
+
+@director.action("magazyn", 3)
+def magazyn(director, rows):
+    director.view_stock(rows)

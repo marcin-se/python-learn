@@ -2,27 +2,19 @@
 # -*- coding: UTF-8 -*-
 # Plik 'zakup.py' obsługuje zakupy magazynowe asortymentu
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-from acc import manager, actions
-from acc_lib.acc_class import *
+from acc import director, actions
 from acc_lib.acc_extras import *
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 
 clearscreen()
 line_banner('Procedure "ZAKUP" was started')
-try:
-    manager.process()
-    manager.post_process("zakup", actions)
-except NoActionException('Probably mismatch in operating parameters!\n'
-                         'Procedure "ZAKUP" not performed.'):
-    raise
-else:
-    print('-= The procedure was completed successfully =-')
-    try:
-        manager.export_to_file()
-    except FileSaveErrorException('Error occurred while writing to the file!'):
-        raise
-    else:
-        print('-= The action was successfully exported to a file =-')
-    finally:
-        manager.close_actions()
+
+director.process()
+director.post_process("zakup", actions)
+print('-= The procedure was completed successfully =-')
+
+director.export_to_file()
+print('-= The action was successfully exported to a file =-')
+
+director.close_actions()
