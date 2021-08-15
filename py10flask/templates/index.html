@@ -1,0 +1,7 @@
+Dostępne imiona: <br /><br />
+
+{% for row in content %}
+    {% if row.profession == "Chief Accountant" %}<b> {% endif %}
+    <a href="/names/{{row.name}}">{{row.name}}</a><br />
+    {% if row.profession == "Chief Accountant" %}</b> {% endif %}
+{% endfor %}

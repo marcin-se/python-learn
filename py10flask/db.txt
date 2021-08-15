@@ -1,0 +1,9 @@
+[
+    {"name": "Marta",       "profession": "Consulting Manager"},
+    {"name": "Kinga",       "profession": "Database Administrator"},
+    {"name": "Natalia",     "profession": "Board Assistant"},
+    {"name": "Bartek",      "profession": "Human Resource Specialist"},
+    {"name": "Eryk",        "profession": "Chief Accountant"},
+    {"name": "Marcin",      "profession": "Customer Care Assistant"},
+    {"name": "Robert",      "profession": "Chief Executive Officer (CEO)"}
+]
