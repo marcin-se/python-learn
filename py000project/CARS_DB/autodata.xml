@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<brands xmlns="http://www.auto-data.net/">
+	<brand>
+		<update>2020-12-28 22:16:33</update>
+		<name>Lamborghini</name>
+		<id>38</id>
+		<models>
+			<model>
+				<update>2021-07-08 13:08:19</update>
+				<name>400 GT</name>
+				<id>2967</id>
+				<generations>
+					<generation>
+						<prototype>0</prototype>
+						<update>2021-07-08 14:14:33</update>
+						<name>400 GT 2+2</name>
+						<modelYear>1967</modelYear>
+						<id>8480</id>
+						<modifications>
+							<modification>
+								<id>43842</id>
+								<update>2021-07-08 14:14:01</update>
+								<brand>Lamborghini</brand>
+								<model>400 GT</model>
+								<generation>400 GT 2+2</generation>
+								<yearstart>1965</yearstart>
+								<yearstop>1968</yearstop>
+								<coupe>Coupé </coupe>
+							</modification>
+						</modifications>
+					</generation>
+				</generations>
+			</model>
+			<model>
+				<update>2021-04-23 10:44:34</update>
+				<name>Essenza SCV12</name>
+				<id>2926</id>
+				<generations>
+					<generation>
+						<prototype>0</prototype>
+						<update>2021-04-23 09:28:54</update>
+						<name>Essenza SCV12</name>
+						<modelYear>2021</modelYear>
+						<id>8340</id>
+						<modifications>
+							<modification>
+								<id>43242</id>
+								<update>2021-04-23 10:48:37</update>
+								<brand>Lamborghini</brand>
+								<model>Essenza SCV12</model>
+								<generation>Essenza SCV12</generation>
+								<yearstart>2020</yearstart>
+								<coupe>Coupé </coupe>
+							</modification>
+						</modifications>
+					</generation>
+				</generations>
+			</model>
+		</models>
+	</brand>
+	<brand>
+		<update>2021-01-12 15:37:21</update>
+		<name>Dodge</name>
+		<id>32</id>
+		<models>
+			<model>
+				<update>2021-01-12 15:37:21</update>
+				<name>Caravan</name>
+				<id>344</id>
+				<generations>
+					<generation>
+						<prototype>0</prototype>
+						<update>2021-01-05 21:49:32</update>
+						<name>Caravan V (facelift 2011)</name>
+						<modelYear>2011</modelYear>
+						<id>5782</id>
+						<modifications>
+							<modification>
+								<id>30987</id>
+								<update>2021-02-12 20:24:17</update>
+								<brand>Dodge</brand>
+								<model>Caravan</model>
+								<generation>Caravan V (facelift 2011)</generation>
+								<yearstart>2011</yearstart>
+								<yearstop>2018</yearstop>
+								<coupe>Minivan </coupe>
+							</modification>
+						</modifications>
+					</generation>
+					<generation>
+						<prototype>0</prototype>
+						<update>2021-01-05 21:49:32</update>
+						<name>Caravan V</name>
+						<modelYear>2008</modelYear>
+						<id>5781</id>
+						<modifications>
+							<modification>
+								<id>31010</id>
+								<update>2021-02-12 20:24:17</update>
+								<brand>Dodge</brand>
+								<model>Caravan</model>
+								<generation>Caravan V</generation>
+								<yearstart>2008</yearstart>
+								<yearstop>2010</yearstop>
+								<coupe>Minivan </coupe>
+							</modification>
+							<modification>
+								<id>30986</id>
+								<update>2021-02-12 20:24:17</update>
+								<brand>Dodge</brand>
+								<model>Caravan</model>
+								<generation>Caravan V</generation>
+								<yearstart>2008</yearstart>
+								<yearstop>2010</yearstop>
+								<coupe>Minivan </coupe>
+							</modification>
+						</modifications>
+					</generation>
+				</generations>
+			</model>
+			<model>
+				<update>2021-01-12 15:27:10</update>
+				<name>Ramcharger</name>
+				<id>2850</id>
+				<generations>
+					<generation>
+						<prototype>0</prototype>
+						<update>2021-02-11 15:08:06</update>
+						<name>Ramcharger</name>
+						<modelYear>1987</modelYear>
+						<id>700</id>
+						<modifications>
+							<modification>
+								<id>2995</id>
+								<update>2021-02-12 20:24:17</update>
+								<brand>Dodge</brand>
+								<model>Ramcharger</model>
+								<generation>Ramcharger</generation>
+								<yearstart>1987</yearstart>
+								<yearstop>1993</yearstop>
+								<coupe>SUV</coupe>
+							</modification>
+							<modification>
+								<id>2994</id>
+								<update>2021-02-12 20:24:17</update>
+								<brand>Dodge</brand>
+								<model>Ramcharger</model>
+								<generation>Ramcharger</generation>
+								<yearstart>1988</yearstart>
+								<yearstop>1993</yearstop>
+								<coupe>SUV</coupe>
+							</modification>
+						</modifications>
+					</generation>
+				</generations>
+			</model>
+		</models>
+	</brand>
+</brands>

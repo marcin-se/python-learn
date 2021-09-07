@@ -1,0 +1,252 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="home">
+            <h3 class="h3">- SELECT ONE OF THE FOLLOWING OPTIONS -</h3>
+        <div class="container">
+<!--   S   A   L   D   O   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion1" checked>
+                <label class="h3" for="accordion1">
+                    <h2><b>• • •  SALDO  • • •</b></h2>
+                    •  Wprowadzanie aktywów finansowych  •<br/>
+                    •  Financial inflows and outflows  •
+                </label>
+                <div class="accordion-content">
+                    <h3>• ACCOUNT CHANGE •</h3>
+                </div>
+                <label class="accordion-content"
+                       for="button1">Enter the value:
+                    <input class="form-group"
+                           type="number"
+                           size="35"
+                           name="balance"
+                           id="amount"
+                           placeholder="[amount] e.c. 120 000"/>
+                    <br/>
+                </label>
+                <label class="accordion-content"
+                       for="button1">Enter the comment:
+                    <input class="form-group"
+                           type="text"
+                           size="35"
+                           name="balance"
+                           placeholder="[comment] e.c. tax refund"
+                           id="comment"  required/>
+                    <br/>
+                </label>
+                <form class="accordion-content"
+                      action="/saldo/"
+                      method="POST">
+                    <label class="h4" for="button1">
+                        <button class="btn btn-success"
+                                type="submit"
+                                id="button1">Confirm</button>
+                    </label>
+                </form>
+            </div>
+<!--   Z   A   K   U   P   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion2" checked>
+                <label class="h3" for="accordion2">
+                    <h2><b>• • •  ZAKUP  • • •</b></h2>
+                    •  Zakup nowego asortymentu  •<br/>
+                    •  Purchase of a new assortment  •
+                </label>
+                <div class="accordion-content">
+                    <h3>• BUY ITEMS •</h3>
+                </div>
+
+                <label class="accordion-content"
+                       for="button2">Enter the name of item :
+                    <input class="form-group"
+                           type="text"
+                           size="20"
+                           name="buy"
+                           id="buy-name"
+                           placeholder="name - e.c. 'raspberry'"/>
+                    <br/>
+                </label>
+                <label class="accordion-content"
+                       for="button2"> Enter the quantity :
+                    <input class="form-group"
+                           type="number"
+                           size="45"
+                           name="buy"
+                           id="buy-qty"
+                           placeholder="quantity - e.c. '7'"/>
+                    <br/>
+                </label>
+
+                <label class="accordion-content"
+                       for="button2">Enter the unit price :
+                    <input class="form-group"
+                           type="number"
+                           size="45"
+                           name="buy"
+                           id="buy-price"
+                           placeholder="unit price - e.c. '39.99'"/>
+                    <br/>
+                </label>
+                <form class="accordion-content"
+                      action="/zakup/"
+                      method="POST">
+                    <label class="h4" for="button2">
+                        <button class="btn btn-success"
+                                type="submit"
+                                id="button2">Confirm</button>
+                    </label>
+                </form>
+            </div>
+<!--   S   P   R   Z   E   D   A   Ż   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion3" checked>
+                <label class="h3" for="accordion3">
+                    <h2><b>• • •  SPRZEDAŻ  • • •</b></h2>
+                    •  Sprzedaż wybranego asortymentu  •<br/>
+                    •  Sale of a selected assortment  •
+                </label>
+
+                <div class="accordion-content">
+                    <h3>• SALE ITEMS •</h3>
+                </div>
+
+                <label class="accordion-content"
+                       for="button3">Enter the name of item:
+                    <input class="form-group"
+                           type="text"
+                           size="20"
+                           id="sal-name"
+                           name="sale"
+                           placeholder="name - e.c. 'raspberry'"/>
+                    <br/>
+                </label>
+
+                <label class="accordion-content"
+                       for="button3">Enter the quantity:
+                    <input class="form-group"
+                           type="number"
+                           size="45"
+                           id="sal-qty"
+                           name="sale"
+                           placeholder="quantity - e.c. '7'"/>
+                    <br/>
+                </label>
+                <label class="accordion-content"
+                       for="button3">Enter the unit price:
+                    <input class="form-group"
+                           type="number"
+                           size="45"
+                           id="sal-price"
+                           name="sale"
+                           placeholder="unit price - e.c. '39.99'"/>
+                    <br/>
+                </label>
+                <form class="accordion-content"
+                      action="/sprzedaz/"
+                      method="POST">
+                    <label class="h4" for="button3">
+                        <button class="btn btn-success"
+                                type="submit"
+                                id="button3">Confirm</button>
+                    </label>
+                </form>
+            </div>
+<!--   P   R   Z   E   G   L   Ą   D   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion4" checked>
+                <label class="h3" for="accordion4">
+                    <h2><b>• • •  PRZEGLĄD  • • •</b></h2>
+                    •  Przegląd przeprowadzonych transakcji  •<br/>
+                    •  Review of transactions carried out  •
+                </label>
+                <div class="accordion-content">
+                    <h3>• REVIEW HISTORY •</h3>
+                </div>
+                <label class="accordion-content"
+                       for="button4">Enter the starting value:
+                    <input class="form-group"
+                           type="number"
+                           size="35"
+                           id="view-start"
+                           name="review"
+                           placeholder="range from - e.c. '8'"/>
+                    <br/>
+                </label>
+                <label class="accordion-content"
+                       for="button4">Enter the end value:
+                    <input class="form-group"
+                           type="number"
+                           size="35"
+                           id="view-stop"
+                           name="review"
+                           placeholder="range to - e.c. '10'"/>
+                    <br/>
+                </label>
+                <form class="accordion-content"
+                      action="/przeglad/"
+                      method="POST">
+                    <label class="h4" for="button4">
+                        <button class="btn btn-success"
+                                type="submit"
+                                id="button4">Confirm</button>
+                    </label>
+                </form>
+            </div>
+<!--   M   A   G   A   Z   Y   N   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion5" checked>
+                <label class="h3" for="accordion5">
+                    <h2><b>• • •  MAGAZYN  • • •</b></h2>
+                    •  Przegląd stanów magazynowych  •<br/>
+                    •  Overview of stock levels  •
+                </label>
+                <div class="accordion-content">
+                    <h3>• WAREHOUSE •</h3>
+                </div>
+                <label class="accordion-content"
+                       for="button5">Enter name(s) of item(s):
+                    <input class="form-group"
+                           type="text"
+                           size="60"
+                           id="warehouse"
+                           name="warehouse"
+                           placeholder="names - e.c. 'raspberry, arduino, ..'"/>
+                    <br/>
+                </label>
+                <form class="accordion-content"
+                      action="/magazyn/"
+                      method="POST">
+                    <label class="h4" for="button5">
+                        <button class="btn btn-success"
+                                type="submit"
+                                id="button5">Confirm</button>
+                    </label>
+                </form>
+            </div>
+<!--   K   O   N   T   O   -->
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion6" checked>
+                <label class="h3" for="accordion6">
+                    <h2><b>• • •  KONTO  • • •</b></h2>
+                    •  Stan konta finansowego  •<br/>
+                    •  Financial account balance  •
+                </label>
+                <div class="accordion-content">
+                    <h3>• ACCOUNT BALANCE •</h3>
+                </div>
+                <label class="accordion-content">
+                    <p>The current account balance is:</p>
+                    <h2 class="h2">120000</h2>
+                </label>
+            </div>
+        </div>
+        <br/>
+        <hr class="textarea"><br/>
+        <h3 class="h3">- ANSWERS WILL APPEAR BELOW -</h3>
+        <div class="textarea2">
+            <label class="textarea">
+
+            </label>
+        </div><br/>
+    </div>
+{% end block %}

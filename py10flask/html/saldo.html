@@ -1,0 +1,50 @@
+<!-- ACCOUNTANT v3.0_online
+# Plik 'saldo.html' obsługuje polecenie zmiany salda konta finansowego
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>SALDO</title>
+    </head>
+    <body>
+
+
+
+
+
+        <form action="/saldo/" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="input-example-1">Balance</label>
+                <input class="form-input" name="balance" type="number"
+                       id="input-example-2" placeholder="Podana w złotówkach"><br/><br/>
+                <label class="form-label" for="input-example-2">Comment</label>
+                <input class="form-input" name="comment" type="text"
+                       id="input-example-1" placeholder="np: składka ZUS"><br/><br/>
+                <button class="btn btn-success" type="submit">Confirm</button>
+            </div>
+        </form>
+
+
+
+
+    </body>
+</html>
+
+
+
+<!--
+clearscreen()
+line_banner('Procedure "SALDO" was started')
+
+director.process()
+director.post_process("saldo", actions)
+print('-= The procedure was completed successfully =-')
+print(f'***** Current account status: {director.account} *****')
+
+director.export_to_file()
+print(f'The action was successfully exported to a file.')
+
+director.close_actions()
+-->

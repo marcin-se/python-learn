@@ -1,0 +1,50 @@
+
+# - - - - - - - - - - - - - - A P P . P Y - - - - - - - - - - - - - - - - - - -#
+import json
+from flask import Flask, render_template
+
+
+app = Flask(__name__)
+
+
+def read_db():
+    with open("db.txt", "r") as file:
+        content = json.loads(file.read())
+        return content
+
+
+def write_db(content):
+    with open("db.txt", "w") as file:
+        file.write(json.dumps(content))
+
+
+@app.route("/")
+def welcome():
+    content = read_db()
+    return render_template("index.html", content=content)
+    # return '\n'.join(row['name'] for row in content)
+
+
+@app.route("/names/<name>")
+def welcome_somebody(name):
+    content = read_db()
+    for row in content:
+        if row["name"] != name:
+            continue
+        return row["profession"]
+    return "Nie znaleziono."
+
+
+# - - - - - - - - - - - - I N D E X . H T M L - - - - - - - - - - - - - - - - -#
+
+Dostępne imiona: <br /><br />
+
+{% for row in content %}
+    {% if row.profession == "Unemployed" %}<b> {% endif %}
+    <a href="/names/{{row.name}}">{{row.name}}</a><br />
+    {% if row.profession == "Unemployed" %}</b> {% endif %}
+{% endfor %}
+
+# - - - - - - - - - - - - - M A I N . H T M L - - - - - - - - - - - - - - - - -#
+
+...

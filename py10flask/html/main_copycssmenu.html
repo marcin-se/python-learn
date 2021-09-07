@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+<!--        <meta charset="utf-8" />-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Accountant v3.0</title>
+        <style type="text/css">
+                <!-- Parametry tekstu z zajęć -->
+            * {
+            box-sizing: border-box;
+            }
+            html, body {
+            background-color: #AACCEE;
+            margin: 30px;
+            padding: 100;
+            }
+            h2 {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1144AA;
+            text-align: center;
+            font-family: Arial;
+            margin: 30px;
+            padding: 100;
+            text-shadow: #173459 1px 0 20px;
+            }
+            h3 {
+            font-size: 18px;
+            padding: 5px
+            font-weight: bold;
+            color: #1144AA;
+            text-align: center;
+            font-family: Arial;
+            }
+            a {
+            text-align: center;
+            font-size: 14px;
+            color: 1144AA;
+            font-family: Arial;
+            }
+            p {
+            font-size: 18px;
+            color: #2266AA;
+            font-family: Arial;
+            text-align: lighter;
+            text-align: justify;
+            margin: 30px;
+            padding: 0px;
+            }
+            .container {
+            margin: 60px;
+            }
+            input[type="radio"] {
+            display: none;
+            }
+            .container {
+            border: 1px solid lightblue;
+            border-radius: 30px;
+            }
+            form {
+            font-size: 10px;
+            color: #0076ff;
+            font-family: Arial;
+            text-align: left;
+            background: #88AAFF;
+            opacity: 4;
+            padding: 0px;
+            border: 1px solid lightblue;
+            border-radius: 5px;
+
+            label {
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid black;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            background: #0076ff;
+            z-index: 0; /* put it above the accordion content */
+            }
+            .accordion:last-child > label, .accordion:last-child > .accordion-content {
+            border: none;
+            }
+            .accordion-content {
+            border-bottom: 1px white;
+            padding: 0;
+            opacity: 10;
+            max-height: 0;
+            overflow: hidden;
+            z-index: 0;
+            transition: 0.5s linear;
+            font-family: Arial;
+            font-size: 30px;
+            text-align: center;
+            font-weight: lighter;
+            text-shadow: #173459 1px 0 3px;
+            }
+            .p1 {
+            font-size: 22px;
+            color: #0076ff;
+            font-family: Arial;
+            text-align: center;
+            margin: 5px;
+            padding: 0px;
+            text-shadow: #073459 1px 0 2px;
+            }
+            }
+            .button {
+            display: block;
+            line-height: 1.5;
+            align: right;
+            text-align: center;
+            padding: 8px;
+            color: white;
+            font-weight: bold;
+            background: #5588FF;
+            border-right: 8px solid #3366AA;
+            border-bottom: 8px solid #3366AA;
+            border-radius: 15px;
+            }
+            input:checked ~ .accordion-content {
+            padding: 15px;
+            opacity: 1;
+            max-height: 500px;
+            z-index: 0;
+            }
+        </style>
+        <meta name="author" content="Ma.Se." />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="css/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="/https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="/https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="/https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    </head>
+    <body>
+        <div>
+            <a href="127.0.0.1:5000/" >- - -  Home page  - - -</a>
+            <hr size=3 width=95% align=CENTER color=WHITE>
+            <h2>ACCOUNTANT v3.0 (accounting and warehouse program)</h2>
+            <hr size=3 width=95% align=CENTER color=WHITE>
+            <h3>"Lorem ipsum dolor sit amet"</h3>
+            <p>Lorem ipsum dolor sit <strong>amet, consectetur adipiscing elit</strong>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <hr size=3 width=95% align=CENTER color=WHITE>
+    </div>
+
+        <div class="container">
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion1" checked>
+                <label for="accordion1"> •••  Wprowadzanie aktywów finansowych  •••  Financial inflows and outflows  ••• </label>
+                <div class="accordion-content">
+                    SALDO
+                </div>
+                    <form class="accordion-content">
+                        <p class="p1">Enter value and comment:</p>
+                        <input type="number" name="value" size="20" id="input1saldo"/>
+                        <input type="text" name="comment" size="60" id="input2saldo"/>
+                        <button class="button" type="submit" id="button1">Confirm</button>
+                    </form>
+            </div>
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion2">
+                <label for="accordion2"> •••  Zakup nowego asortymentu  •••  Purchase of a new assortment  ••• </label>
+                <div class="accordion-content">
+                    KUPNO
+                </div>
+                    <form class="accordion-content">
+                        <p class="p1">Enter the purchase parameters:</p>
+                        <input type="text" name="assortment name" size="15" id="input1buy"/>
+                        <input type="number" name="assortment quantity" size="10" id="input2buy"/>
+                        <input type="number" name="unite price" size="10" id="input3buy"/>
+                        <button class="button" type="submit" id="button2">Buy</button>
+                    </form>
+            </div>
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion3">
+                    <label for="accordion3"> •••  Sprzedaż wybranego asortymentu  •••  Sale of a selected assortment  ••• </label>
+                <div class="accordion-content">
+                    SPRZEDAŻ
+                </div>
+                    <form class="accordion-content">
+                        <p class="p1">Enter the sale parameters:</p>
+                        <input type="text" name="assortment name" size="15" id="input1sale"/>
+                        <input type="number" name="assortment quantity" size="10" id="input2sale"/>
+                        <input type="number" name="unite price" size="10" id="input3sale"/>
+                        <button class="button" type="submit" id="button3">Sale</button>
+                    </form>
+            </div>
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion4">
+                <label for="accordion4"> •••  Przegląd przeprowadzonych transakcji  •••  Review of transactions carried out  ••• </label>
+                <div class="accordion-content">
+                    PRZEGLĄD
+                </div>
+                    <form class="accordion-content">
+                        <p class="p1">Select number of transaction:</p>
+                        <input type="text" name="type of transaction" size="10" id="input1view"/>
+                        <input type="text" name="assortment name" size="15" id="input2view"/>
+                        <input type="text" name="assortment quantity" size="10" id="input3view"/>
+                        <input type="number" name="unite price" size="10" id="input4view"/>
+                        <button class="button" type="submit" id="button4">View</button>
+                    </form>
+            </div>
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion5">
+                <label for="accordion5"> •••  Przegląd stanów magazynowych  •••  Overview of stock levels  ••• </label>
+                <div class="accordion-content">
+                    MAGAZYN
+                </div>
+                    <form class="accordion-content">
+                        <p class="p1">Select the assortment name:</p>
+                        <input type="text" name="assortment name" size="15" id="input1ware"/>
+                        <input type="text" name="assortment quantity" size="10" id="input2ware"/>
+                        <button class="button" type="submit" id="button5">Show</button>
+                    </form>
+            </div>
+            <div class="accordion">
+                <input type="radio" name="accordion" id="accordion6">
+                <label for="accordion6"> •••  Stan konta finansowego  •••  Financial account balance  ••• </label>
+                <div class="accordion-content">
+                    KONTO
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<!--action="/main/"-->

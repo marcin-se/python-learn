@@ -1,0 +1,44 @@
+<!-- ACCOUNTANT v4.0_online
+# Plik 'zakup.html' obsługuje zakupy magazynowe asortymentu
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ZAKUP</title>
+</head>
+<body>
+<form method="POST" action="/zakup/">
+<div class="form-group">
+  <label class="form-label" for="input-example-1">Produkt: </label>
+  <input class="form-input" name="Produkt" type="text" id="input-example-1" placeholder="np: Arduino"><br />
+  <br />
+  <label class="form-label" for="input-example-2">Cena: </label>
+  <input class="form-input" name="Cena" type="number" id="input-example-2" placeholder="Podana w złotówkach"><br />
+  <br />
+  <label class="form-label" for="input-example-3">Ilość: </label>
+  <input class="form-input" name="Ilosc" type="number" id="input-example-3" placeholder="Kupionych sztuk"><br />
+  <br />
+  <button class="btn btn-success" type="submit">Wyślij</button>
+</div>
+</form>
+</body>
+</html>
+
+
+
+
+<!--
+clearscreen()
+line_banner('Procedure "ZAKUP" was started')
+
+director.process()
+director.post_process("zakup", actions)
+print('-= The procedure was completed successfully =-')
+
+director.export_to_file()
+print('-= The action was successfully exported to a file =-')
+
+director.close_actions()
+-->

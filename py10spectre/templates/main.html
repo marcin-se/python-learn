@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <title>Flask-wprowadzenie</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="/http://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="/http://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="/http://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="columns">
+                <div class="colM-4">
+                    <ul class="menu">
+                        <li class="divider"></li>
+                        <li class="menu-item">
+                            <a href="#">Slack</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="menu-item">
+                            <label class="form-checkbox">
+                                <input type="checkbox">form-checkbox
+                            </label>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="menu-item">
+                            <a href="#">Settings</a>
+                            <div class="menu-badge">
+                              <label class="label label-primary">2</label>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#">My profile</a>
+                            <div class="menu-badge">
+                                <label class="form-checkbox">
+                                    <input type="checkbox">Public
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="colM-8">
+                    <h1>Lista użytkowników:</h1>
+                    <table class="table table-strip table-hover ">
+                        <thead>
+                            <tr>
+                                <th>Name:</th>
+                                <th>Profession:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in content %}
+                                <tr>
+                                    <td>{{row.name}}</td>
+                                    <td>{{row.profession}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                    <form action="/main/" method="GET">
+                        <input type="text" name="name">
+                        <input type="text" name="profession">
+                        <button type="submit">Send data</button>
+                    </form>
+
+
+
+                    <form action="/main/" method="POST">
+                        <div class="form-group">
+                            <label for="name">name</label>
+                            <input class="form-input"
+                                   name="name"
+                                   type="text"
+                                   id="name"
+                                   placeholder="Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profession">profession</label>
+                            <input class="form-input"
+                                   name="profession"
+                                   type="text"
+                                   id="profession"
+                                   placeholder="Profession">
+                        </div>
+
+                        <button class="btn btn-success">SEND</button>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+<!-- HISTORIA   (ACCOUNTANT v3.0 online)-->
+{% extends "main.html" %}
+{% block content %}
+    {% for row in content %}
+        {% for ask in row %}
+            {% print(ask) %}<br />
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+
+
+Historia: <br />
+<br />
+ <tbody>
+  {% for ask in content %}
+    {{ ask.what_action }}<br />
+    {{ ask.first_action }}<br />
+    {{ ask.second_action }}<br />
+    {% if ask.third_action == None %} {{ '' }} {% else %} {{ ask.third_action }} {% endif %}<br />
+  <br />
+  {% endfor %}
+  </tbody>

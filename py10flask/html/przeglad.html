@@ -1,0 +1,25 @@
+<!-- ACCOUNTANT v4.0_online
+# Plik 'przeglad.html' zwraca informacje o archiwalnych transakcjach
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+Historia: <br />
+<br />
+{% for row in content %}
+    {% for i in row %}
+        {% print(i) %}<br />
+    {% endfor %}
+{% endfor %}
+
+
+
+<!--
+clearscreen()
+line_banner('Procedure "PRZEGLAD" was started')
+
+director.process()
+director.post_process("przegląd", actions)
+print('-= The procedure was completed successfully =-')
+
+director.close_actions()
+-->

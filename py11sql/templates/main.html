@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <title>Accountant v3.0</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="author" content="Marcin Serafin"/>
+        <meta name="description" content="Praca z obsługi frameworka Flask"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="css/shape.css" rel="stylesheet">
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename='css/shape.css') }}">
+<!--        <link rel="stylesheet"
+              href="/https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet"
+              href="/https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet"
+              href="/https://unpkg.com/spectre.css/dist/spectre-icons.min.css">-->
+    </head>
+
+    <body>
+        <header>
+            <div>
+                <ul class="menu">
+                    <li><a href="{{ 'main.html' }}">• H O M E •</a></li>
+                    <li><a href="{{ url_for('about') }}">• A B O U T •</a></li>
+                </ul>
+                <hr class="textarea"><br/>
+                <h2 class="h2"><strong>ACCOUNTANT v3.0</strong></h2><br/>
+                <h1 class="h1">...with using the Flask Web Application -
+                    introduction</h1>
+                <hr class="textarea"><br>
+            </div>
+        </header>
+        <div class="container">
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+        <div class="container">endblock content %}
+        </div>
+        <hr class="textarea">
+        <footer>
+            <a>© Copyright | Owner This Application | 2021 ©<br/>
+                ® All Rights Not Reserved ®</a>
+        </footer>
+    </body>
+</html>
+
